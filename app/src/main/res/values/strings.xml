@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Diario de Viajes</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Contraseña (opcional)</string>
+    <string name="action_sign_in">Ingresa o regístrate</string>
+    <string name="action_sign_in_short">Ingresar</string>
+    <string name="error_invalid_email">El mail ingresdo es inválido</string>
+    <string name="error_invalid_password">La contraseña es demasiado corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">Necesitamos que nos otorgue el permiso para ver sus contactos.</string>
+</resources>
