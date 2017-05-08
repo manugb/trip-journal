@@ -43,7 +43,7 @@ public class NotesActivity extends AppCompatActivity {
         notes.add(note3);
         notes.add(note4);
 
-        mAdapter = new NotesAdapter(notes);
+        mAdapter = new NotesAdapter(this, notes);
         mRecyclerView.setAdapter(mAdapter);
     }
 }
