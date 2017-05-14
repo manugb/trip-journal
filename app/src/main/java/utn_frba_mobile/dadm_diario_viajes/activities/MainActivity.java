@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_notes) {
-
+            Intent intent = new Intent(this, NotesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_trips) {
 
         } else if (id == R.id.nav_logout) {
