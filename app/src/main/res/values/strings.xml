@@ -11,4 +11,16 @@
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
     <string name="error_field_required">Este campo es requerido</string>
     <string name="permission_rationale">Necesitamos que nos otorgue el permiso para ver sus contactos.</string>
+
+    <string name="navigation_drawer_open">Abrir</string>
+    <string name="navigation_drawer_close">Cerrar</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_share" />
+    <string name="action_logout">Log out</string>
+    <string name="hi">Hola</string>
+    <string name="profile_picture">Imagen de perfil</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="my_trips">Mis viajes</string>
+    <string name="my_notes">Mis notas</string>
 </resources>
