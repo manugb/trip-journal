@@ -1,6 +1,5 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
-import android.animation.TypeConverter;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -28,10 +28,11 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
         public ViewHolder(View v) {
             super(v);
-            cv = ((CardView)itemView.findViewById(R.id.card_view));
+            cv = ((CardView)itemView.findViewById(R.id.trip_card));
             name = (TextView) v.findViewById(R.id.name);
             dateInit = (TextView) v.findViewById(R.id.dateInit);
             dateEnd = (TextView) v.findViewById(R.id.dateEnd);
+            photo = (ImageView) v.findViewById(R.id.photo);
         }
     }
 
@@ -52,7 +53,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
         holder.name.setText(trip.getName());
-        SimpleDateFormat format = new SimpleDateFormat("DD/MM/aaaa");
+        DateFormat format = new SimpleDateFormat();
+        format = SimpleDateFormat.getDateInstance();
         holder.dateInit.setText(format.format(trip.getDateInit().getTime()));
         holder.dateEnd.setText(format.format(trip.getDateEnd().get(Calendar.DATE)));
         holder.photo.setImageResource(trip.getPhoto());
