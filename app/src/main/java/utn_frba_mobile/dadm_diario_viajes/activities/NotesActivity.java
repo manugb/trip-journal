@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -32,11 +33,19 @@ public class NotesActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
+
+
         // specify an adapter (see also next example)
-        Note note1 = new Note("Nota 1");
-        Note note2 = new Note("Nota 2");
-        Note note3 = new Note("Nota 3");
-        Note note4 = new Note("Nota 4");
+        Calendar date = Calendar.getInstance();
+        date.set(2015,10,5);
+        Note note1 = new Note("City Tour","Barcelona",date);
+        date.set(2015,10,6);
+        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
+        date.set(2015,10,7);
+        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
+        date.set(2015,10,8);
+        Note note4 = new Note("Circuito de Bares","Barcelona",date);
 
         final ArrayList<Note> notes = new ArrayList<>();
         notes.add(note1);
