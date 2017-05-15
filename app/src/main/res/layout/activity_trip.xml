@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utn_frba_mobile.dadm_diario_viajes.activities.NotesActivity">
+    tools:context="utn_frba_mobile.dadm_diario_viajes.activities.TripActivity">
 
     <!-- A RecyclerView with some commonly used attributes -->
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/notes_recycler_view"
+        android:id="@+id/trip_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
+
 
 </android.support.constraint.ConstraintLayout>

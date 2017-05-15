@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, NotesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_trips) {
-
+            Intent intent = new Intent(this, TripActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_logout) {
             onLogout();
         }
