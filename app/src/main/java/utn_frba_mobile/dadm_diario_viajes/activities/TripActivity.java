@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
@@ -21,6 +22,7 @@ public class TripActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        android.os.Debug.waitForDebugger();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
 
@@ -34,21 +36,18 @@ public class TripActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
+        List<Trip> trips;
+        trips = new ArrayList<>();
         Calendar dateInit = Calendar.getInstance();
         Calendar dateEnd = Calendar.getInstance();
 
         dateInit.set(2015,10,05);
         dateEnd.set(2015,10,30);
-        Trip trip1 = new Trip("España",dateInit,dateEnd);
+        trips.add(new Trip("España",dateInit,dateEnd, R.drawable.spain));
 
         dateInit.set(2017,03,8);
         dateEnd.set(2015,03,30);
-        Trip trip2 = new Trip("Nueva Zelanda",dateInit,dateEnd);
-
-        ArrayList<Trip> trips = new ArrayList<>();
-        trips.add(trip1);
-        trips.add(trip2);
+        trips.add(new Trip("Nueva Zelanda",dateInit,dateEnd,R.drawable.newzealand));
 
         mAdapter = new TripsAdapter(trips);
         mRecyclerView.setAdapter(mAdapter);

@@ -1,11 +1,16 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
+import android.animation.TypeConverter;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -15,11 +20,18 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     private List<Trip> mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public CardView cv;
         public TextView name;
+        public TextView dateInit;
+        public TextView dateEnd;
+        public ImageView photo;
 
         public ViewHolder(View v) {
             super(v);
+            cv = ((CardView)itemView.findViewById(R.id.card_view));
             name = (TextView) v.findViewById(R.id.name);
+            dateInit = (TextView) v.findViewById(R.id.dateInit);
+            dateEnd = (TextView) v.findViewById(R.id.dateEnd);
         }
     }
 
@@ -40,7 +52,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
         holder.name.setText(trip.getName());
-
+        SimpleDateFormat format = new SimpleDateFormat("DD/MM/aaaa");
+        holder.dateInit.setText(format.format(trip.getDateInit().getTime()));
+        holder.dateEnd.setText(format.format(trip.getDateEnd().get(Calendar.DATE)));
+        holder.photo.setImageResource(trip.getPhoto());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
