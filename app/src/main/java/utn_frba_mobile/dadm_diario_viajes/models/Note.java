@@ -1,6 +1,6 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by manu on 07/05/17.
@@ -9,13 +9,13 @@ import java.util.Calendar;
 public class Note {
     private String name;
     private String location;
-    private Calendar date;
+    private Date date;
 
     // private Trip trip;
 
     public Note() {}
 
-    public Note(String name, String location, Calendar date) {
+    public Note(String name, String location, Date date) {
         this.name = name;
         this.location = location;
         this.date = date;
@@ -27,7 +27,7 @@ public class Note {
     public String getLocation() { return this.location; }
     public void setLocation(String location) { this.location = location; }
 
-    public Calendar getDate() { return this.date; }
-    public void setDate(Calendar date) { this.date = date; }
+    public Date getDate() { return this.date; }
+    public void setDate(Date date) { this.date = date; }
 
 }

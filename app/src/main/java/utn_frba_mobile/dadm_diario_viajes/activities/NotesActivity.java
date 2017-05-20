@@ -1,16 +1,16 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 
-import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 public class NotesActivity extends AppCompatActivity {
@@ -34,17 +34,11 @@ public class NotesActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-
-
         // specify an adapter (see also next example)
-        Calendar date = Calendar.getInstance();
-        date.set(2015,10,5);
+        Date date = new Date();
         Note note1 = new Note("City Tour","Barcelona",date);
-        date.set(2015,10,6);
         Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        date.set(2015,10,7);
         Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        date.set(2015,10,8);
         Note note4 = new Note("Circuito de Bares","Barcelona",date);
 
         final ArrayList<Note> notes = new ArrayList<>();

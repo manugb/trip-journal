@@ -12,14 +12,10 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.activities.LoginActivity;
 import utn_frba_mobile.dadm_diario_viajes.activities.NoteActivity;
-import utn_frba_mobile.dadm_diario_viajes.activities.NotesActivity;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 /**
@@ -80,9 +76,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.name.setText(note.getName());
         holder.location.setText(note.getLocation());
 
-        DateFormat format;
-        format = SimpleDateFormat.getDateInstance();
-        holder.date.setText(format.format(note.getDate().get(Calendar.DATE)));
+        DateFormat format = SimpleDateFormat.getDateInstance();
+        holder.date.setText(format.format(note.getDate()));
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
