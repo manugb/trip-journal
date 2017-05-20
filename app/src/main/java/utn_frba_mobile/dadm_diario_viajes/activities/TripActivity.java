@@ -1,12 +1,11 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,15 +36,10 @@ public class TripActivity extends AppCompatActivity {
 
         List<Trip> trips;
         trips = new ArrayList<>();
-        Calendar dateInit = Calendar.getInstance();
-        Calendar dateEnd = Calendar.getInstance();
+        Date dateInit = new Date();
+        Date dateEnd = new Date();
 
-        dateInit.set(2015,10,05);
-        dateEnd.set(2015,10,30);
         trips.add(new Trip("España",dateInit,dateEnd, R.drawable.spain));
-
-        dateInit.set(2017,03,8);
-        dateEnd.set(2015,03,30);
         trips.add(new Trip("Nueva Zelanda",dateInit,dateEnd,R.drawable.newzealand));
 
         mAdapter = new TripsAdapter(trips);

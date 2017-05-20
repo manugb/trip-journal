@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -55,8 +54,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
         holder.name.setText(trip.getName());
         DateFormat format = new SimpleDateFormat();
         format = SimpleDateFormat.getDateInstance();
-        holder.dateInit.setText(format.format(trip.getDateInit().getTime()));
-        holder.dateEnd.setText(format.format(trip.getDateEnd().get(Calendar.DATE)));
+        holder.dateInit.setText(format.format(trip.getDateInit()));
+        holder.dateEnd.setText(format.format(trip.getDateEnd()));
         holder.photo.setImageResource(trip.getPhoto());
     }
 

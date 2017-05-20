@@ -10,13 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.activities.LoginActivity;
 import utn_frba_mobile.dadm_diario_viajes.activities.NoteActivity;
-import utn_frba_mobile.dadm_diario_viajes.activities.NotesActivity;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 /**
@@ -34,11 +33,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         // each data item is just a string in this case
         public CardView card;
         public TextView name;
+        public TextView location;
+        public TextView date;
         public Button delete;
 
         public ViewHolder(View v) {
             super(v);
             name = (TextView) v.findViewById(R.id.name);
+            location = (TextView) v.findViewById(R.id.location);
+            date = (TextView) v.findViewById(R.id.date);
             card = (CardView) v.findViewById(R.id.card);
             delete = (Button) v.findViewById(R.id.delete_note);
         }
@@ -71,6 +74,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         final Note note = mDataset.get(position);
 
         holder.name.setText(note.getName());
+        holder.location.setText(note.getLocation());
+
+        DateFormat format = SimpleDateFormat.getDateInstance();
+        holder.date.setText(format.format(note.getDate()));
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
