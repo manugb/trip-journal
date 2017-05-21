@@ -3,9 +3,8 @@ package utn_frba_mobile.dadm_diario_viajes.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,10 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 import utn_frba_mobile.dadm_diario_viajes.R;
 
@@ -30,6 +33,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            startActivity(AuthUiActivity.createIntent(this));
+            finish();
+            return;
+        }
+
+        loggedUser = User.create(currentUser);
+
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -42,8 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu();
-
-        loggedUser = User.create("Victoria", "Cabrera");
     }
 
     @Override
@@ -109,11 +120,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void onLogout() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                public void onComplete(@NonNull Task<Void> task) {
+                    // user is now signed out
+                    Intent intent = new Intent(MainActivity.this, AuthUiActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
     }
 
-    public User getLoggedUser() {
-        return loggedUser;
+    public static Intent createIntent(Context context, IdpResponse idpResponse) {
+        Intent in = IdpResponse.getIntent(idpResponse);
+        in.setClass(context, MainActivity.class);
+        return in;
     }
 }
