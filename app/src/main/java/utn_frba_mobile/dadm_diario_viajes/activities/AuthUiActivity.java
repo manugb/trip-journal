@@ -10,6 +10,8 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Arrays;
+
 public class AuthUiActivity extends AppCompatActivity {
 
     // Choose an arbitrary request code value
@@ -27,6 +29,9 @@ public class AuthUiActivity extends AppCompatActivity {
             startActivityForResult(
                 AuthUI.getInstance()
                     .createSignInIntentBuilder()
+                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                     .setIsSmartLockEnabled(false)
                     .build(),
                     RC_SIGN_IN);
