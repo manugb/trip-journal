@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "567710486619",
+    "firebase_url": "https://dadm-diario-viajes.firebaseio.com",
+    "project_id": "dadm-diario-viajes",
+    "storage_bucket": "dadm-diario-viajes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567710486619:android:c143d3e761bfe53e",
+        "android_client_info": {
+          "package_name": "utn_frba_mobile.dadm_diario_viajes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "567710486619-t5j1nk89gptnaocrghqv26l9maje6lsq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDtrSw9F6GBX7KyuOxakZldDKagq5xP7Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,22 +1,35 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
+import android.net.Uri;
+
+import com.google.firebase.auth.FirebaseUser;
+
 /**
  * Created by toiacabrera on 14/05/17.
  */
 
 public class User {
 
+    private String email;
     private String name;
-    private String lastName;
+    private Uri photoUrl;
 
-    public static User create(String name, String lastName) {
+    public static User create(FirebaseUser firebaseUser) {
         User user = new User();
-        user.name = name;
-        user.lastName = lastName;
+        user.email = firebaseUser.getEmail();
+        user.name = firebaseUser.getDisplayName();
+        user.photoUrl = firebaseUser.getPhotoUrl();
         return user;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
     public String getName() {
-        return this.name;
+        return name;
+    }
+    public Uri getPhotoUrl() {
+        return photoUrl;
     }
 }
