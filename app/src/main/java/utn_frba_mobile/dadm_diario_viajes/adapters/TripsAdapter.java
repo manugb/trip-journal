@@ -21,16 +21,12 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView cv;
         public TextView name;
-        public TextView dateInit;
-        public TextView dateEnd;
         public ImageView photo;
 
         public ViewHolder(View v) {
             super(v);
             cv = ((CardView)itemView.findViewById(R.id.trip_card));
             name = (TextView) v.findViewById(R.id.name);
-            dateInit = (TextView) v.findViewById(R.id.dateInit);
-            dateEnd = (TextView) v.findViewById(R.id.dateEnd);
             photo = (ImageView) v.findViewById(R.id.photo);
         }
     }
@@ -52,10 +48,6 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
         holder.name.setText(trip.getName());
-        DateFormat format = new SimpleDateFormat();
-        format = SimpleDateFormat.getDateInstance();
-        holder.dateInit.setText(format.format(trip.getDateInit()));
-        holder.dateEnd.setText(format.format(trip.getDateEnd()));
         holder.photo.setImageResource(trip.getPhoto());
     }
 
