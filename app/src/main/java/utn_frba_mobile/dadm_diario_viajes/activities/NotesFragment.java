@@ -37,7 +37,6 @@ public class NotesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
 
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);

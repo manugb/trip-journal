@@ -1,9 +1,9 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,6 +26,7 @@ import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     private List<Note> mDataset;
+    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -82,14 +83,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* Intent i = new Intent(context, NoteFragment.class);
-                i.putExtra(Intent.EXTRA_TEXT, note.getName());
-                context.startActivity(i);*/
 
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 NoteFragment fragment = new NoteFragment();
+
                 Bundle bundle = new Bundle();
                 bundle.putString("name", note.getName());
                 fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
