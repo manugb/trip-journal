@@ -9,13 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment;
+import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        android.os.Debug.waitForDebugger();
         super.onCreate(savedInstanceState);
 
 

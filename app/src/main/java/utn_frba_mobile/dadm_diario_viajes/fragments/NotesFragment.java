@@ -1,4 +1,4 @@
-package utn_frba_mobile.dadm_diario_viajes.activities;
+package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;

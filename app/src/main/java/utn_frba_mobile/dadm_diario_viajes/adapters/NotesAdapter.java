@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.activities.NoteFragment;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 /**

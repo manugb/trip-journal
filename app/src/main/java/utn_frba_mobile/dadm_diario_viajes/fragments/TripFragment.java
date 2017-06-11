@@ -1,10 +1,8 @@
-package utn_frba_mobile.dadm_diario_viajes.activities;
+package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
