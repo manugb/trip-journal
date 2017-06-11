@@ -1,8 +1,12 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,9 +25,10 @@ public class TripFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public static TripFragment newInstance(){
+    public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
         return tripFragment;
     }
@@ -31,7 +36,32 @@ public class TripFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_trip, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_trip, container, false);
+
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
+        mLayoutManager = new LinearLayoutManager(activity);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+
+        /*Context context = view.getContext();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+*/
+        List<Trip> trips;
+        trips = new ArrayList<>();
+        Date dateInit = new Date();
+        Date dateEnd = new Date();
+
+        trips.add(new Trip("España", dateInit, dateEnd, R.drawable.spain));
+        trips.add(new Trip("Nueva Zelanda", dateInit, dateEnd, R.drawable.newzealand));
+
+        mAdapter = new TripsAdapter(trips);
+        mRecyclerView.setAdapter(mAdapter);
+
+        return view;
     }
 
 }

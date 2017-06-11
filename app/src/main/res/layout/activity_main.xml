@@ -8,6 +8,14 @@
     android:orientation="vertical"
     tools:context="utn_frba_mobile.dadm_diario_viajes.activities.MainActivity">
 
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/navigation"
+        android:animateLayoutChanges="true"
+        >
+    </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -17,13 +25,6 @@
         android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:animateLayoutChanges="true"
-        >
-    </FrameLayout>
+
 
 </RelativeLayout>
