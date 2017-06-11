@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = TripFragment.newInstance();
                     break;
                 case R.id.navigation_add_note:
-                    selectedFragment = NotesFragment.newInstance();
+                    selectedFragment = TripFragment.newInstance();
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = TripFragment.newInstance();
