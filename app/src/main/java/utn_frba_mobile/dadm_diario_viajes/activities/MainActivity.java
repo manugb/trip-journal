@@ -12,12 +12,15 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextMessage;
+    private User loggedUser;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,7 +51,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        android.os.Debug.waitForDebugger();
         super.onCreate(savedInstanceState);
+
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            startActivity(AuthUiActivity.createIntent(this));
+            finish();
+            return;
+        }
+
+        loggedUser = User.create(currentUser);
+
+
         setContentView(R.layout.activity_main);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -69,5 +85,6 @@ public class MainActivity extends AppCompatActivity {
         in.setClass(context, MainActivity.class);
         return in;
     }
+
 
 }
