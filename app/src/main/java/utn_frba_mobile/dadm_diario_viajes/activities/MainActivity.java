@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = TripFragment.newInstance();
                     break;
                 case R.id.navigation_dashboard:
-                    selectedFragment = TripFragment.newInstance();
+                    selectedFragment = NotesFragment.newInstance();
                     break;
                 case R.id.navigation_notifications:
                     selectedFragment = TripFragment.newInstance();

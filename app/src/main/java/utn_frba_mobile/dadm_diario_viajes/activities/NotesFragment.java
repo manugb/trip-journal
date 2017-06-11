@@ -1,10 +1,16 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,26 +19,30 @@ import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
-public class NotesActivity extends AppCompatActivity {
+public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
+    private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    public static NotesFragment newInstance() {
+        NotesFragment notesFragment = new NotesFragment();
+        return notesFragment;
+    }
+
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notes);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.notes_recycler_view);
+        View view = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
+        mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // specify an adapter (see also next example)
         Date date = new Date();
@@ -47,8 +57,9 @@ public class NotesActivity extends AppCompatActivity {
         notes.add(note3);
         notes.add(note4);
 
-        mAdapter = new NotesAdapter(this, notes);
+        mAdapter = new NotesAdapter(notes);
         mRecyclerView.setAdapter(mAdapter);
+
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -71,5 +82,8 @@ public class NotesActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        return view;
     }
+
 }
