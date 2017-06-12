@@ -1,7 +1,6 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -59,13 +58,11 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 NotesFragment fragment = new NotesFragment();
 
-                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
                 transaction.replace(R.id.frame_layout, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-
-
             }
         });
     };

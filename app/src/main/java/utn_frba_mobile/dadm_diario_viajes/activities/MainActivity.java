@@ -1,12 +1,12 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            FragmentTransaction transaction = getSupportFragmentManager().
+            FragmentTransaction transaction = getFragmentManager().
                     beginTransaction();
             transaction.replace(R.id.frame_layout, selectedFragment);
             transaction.commit();
@@ -69,8 +68,16 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        // Leave fragments code at the end
+        // If we're being restored from a previous state,
+        // then we don't need to do anything and should return or else
+        // we could end up with overlapping fragments.
+        if (savedInstanceState != null) {
+            return;
+        }
+
         //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager().
+        FragmentTransaction transaction = getFragmentManager().
                 beginTransaction();
         transaction.replace(R.id.frame_layout, TripFragment.newInstance());
         transaction.commit();
