@@ -1,7 +1,9 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.activities.NoteActivity;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 
 /**
@@ -48,8 +50,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public NotesAdapter(Context context, List<Note> myDataset) {
-        this.context = context;
+    public NotesAdapter(List<Note> myDataset) {
         mDataset = myDataset;
     }
 
@@ -82,9 +83,19 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(context, NoteActivity.class);
-                i.putExtra(Intent.EXTRA_TEXT, note.getName());
-                context.startActivity(i);
+
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                NoteFragment fragment = new NoteFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("name", note.getName());
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

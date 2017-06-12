@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="utn_frba_mobile.dadm_diario_viajes.activities.NoteActivity">
+    tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment">
 
     <TextView
         android:id="@+id/note_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />W
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>

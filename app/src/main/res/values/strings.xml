@@ -23,4 +23,8 @@
     <string name="log_out">Cerrar sesión</string>
     <string name="my_trips">Mis viajes</string>
     <string name="my_notes">Mis notas</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
