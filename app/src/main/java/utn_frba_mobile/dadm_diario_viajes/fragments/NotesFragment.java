@@ -18,12 +18,14 @@ import java.util.Date;
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
+import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 
 public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Trip trip;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -43,18 +45,12 @@ public class NotesFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        // specify an adapter (see also next example)
-        Date date = new Date();
-        Note note1 = new Note("City Tour","Barcelona",date);
-        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip) bundle.getSerializable("trip");
+        }
 
-        final ArrayList<Note> notes = new ArrayList<>();
-        notes.add(note1);
-        notes.add(note2);
-        notes.add(note3);
-        notes.add(note4);
+        final ArrayList<Note> notes = trip.getNotes();
 
         mAdapter = new NotesAdapter(notes);
         mRecyclerView.setAdapter(mAdapter);

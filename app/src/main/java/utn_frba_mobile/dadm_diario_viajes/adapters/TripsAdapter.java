@@ -47,7 +47,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
         holder.name.setText(trip.getName());
         holder.photo.setImageResource(trip.getPhoto());
@@ -56,15 +56,19 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
 
+                Trip tripSelected = mDataset.get(holder.getAdapterPosition());
+
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 NotesFragment fragment = new NotesFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("trip",tripSelected);
+                fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
-
 
             }
         });
