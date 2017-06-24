@@ -17,6 +17,7 @@ import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
+import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 
 public class TripFragment extends Fragment {
@@ -38,8 +39,32 @@ public class TripFragment extends Fragment {
         Date dateInit = new Date();
         Date dateEnd = new Date();
 
-        trips.add(new Trip("España",dateInit,dateEnd, R.drawable.spain));
-        trips.add(new Trip("Nueva Zelanda",dateInit,dateEnd,R.drawable.newzealand));
+        Date date = new Date();
+
+        //Spain notes
+        Note note1 = new Note("City Tour","Barcelona",date);
+        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
+        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
+        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+
+        final ArrayList<Note> notesSpain = new ArrayList<>();
+        notesSpain.add(note1);
+        notesSpain.add(note2);
+        notesSpain.add(note3);
+        notesSpain.add(note4);
+
+        //New Zealand notes
+        Note note5 = new Note("City Tour","Auckland",date);
+        Note note6 = new Note("Circuito Gastronómico","Rotorua",date);
+        Note note7 = new Note("Recorrido Histórico","Wellington",date);
+
+        final ArrayList<Note> notesNZ = new ArrayList<>();
+        notesNZ.add(note5);
+        notesNZ.add(note6);
+        notesNZ.add(note7);
+
+        trips.add(new Trip("España", dateInit, dateEnd, R.drawable.spain, notesSpain));
+        trips.add(new Trip("Nueva Zelanda", dateInit, dateEnd, R.drawable.newzealand,notesNZ));
 
         mAdapter = new TripsAdapter(trips);
     }
@@ -55,10 +80,6 @@ public class TripFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        /*Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-*/
         mRecyclerView.setAdapter(mAdapter);
 
         return view;

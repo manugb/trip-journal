@@ -19,13 +19,15 @@ import java.util.List;
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
+import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 
 public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<Note> notes;
+    private Trip trip;
+    private ArrayList<Note> notes;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -36,14 +38,20 @@ public class NotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // specify an adapter (see also next example)
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip) bundle.getSerializable("trip");
+        }
+
+        notes = trip.getNotes();
+
         Date date = new Date();
         Note note1 = new Note("City Tour","Barcelona",date);
         Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
         Note note3 = new Note("Recorrido Histórico","Barcelona",date);
         Note note4 = new Note("Circuito de Bares","Barcelona",date);
 
-        notes = new ArrayList<>();
         notes.add(note1);
         notes.add(note2);
         notes.add(note3);
