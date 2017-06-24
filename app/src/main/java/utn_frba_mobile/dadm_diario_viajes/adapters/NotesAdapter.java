@@ -1,6 +1,6 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
-import android.support.v4.app.FragmentTransaction;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -91,7 +91,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 bundle.putString("name", note.getName());
                 fragment.setArguments(bundle);
 
-                FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
                 transaction.replace(R.id.frame_layout, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();

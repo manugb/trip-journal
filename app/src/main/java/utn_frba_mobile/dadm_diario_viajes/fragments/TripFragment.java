@@ -1,9 +1,9 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,6 @@ import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 
 public class TripFragment extends Fragment {
-
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
@@ -32,29 +31,14 @@ public class TripFragment extends Fragment {
         return tripFragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        View view = inflater.inflate(R.layout.fragment_trip, container, false);
-
-
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
-        mLayoutManager = new LinearLayoutManager(activity);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-        /*Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-*/
-        List<Trip> trips;
-        trips = new ArrayList<>();
+        List<Trip> trips = new ArrayList<>();
         Date dateInit = new Date();
         Date dateEnd = new Date();
 
-        // specify an adapter (see also next example)
         Date date = new Date();
 
         //Spain notes
@@ -83,6 +67,19 @@ public class TripFragment extends Fragment {
         trips.add(new Trip("Nueva Zelanda", dateInit, dateEnd, R.drawable.newzealand,notesNZ));
 
         mAdapter = new TripsAdapter(trips);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_trip, container, false);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
+        mLayoutManager = new LinearLayoutManager(activity);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
         mRecyclerView.setAdapter(mAdapter);
 
         return view;

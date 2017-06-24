@@ -1,9 +1,9 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
@@ -26,10 +27,37 @@ public class NotesFragment extends Fragment {
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
     private Trip trip;
+    private ArrayList<Note> notes;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
         return notesFragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip) bundle.getSerializable("trip");
+        }
+
+        notes = trip.getNotes();
+
+        Date date = new Date();
+        Note note1 = new Note("City Tour","Barcelona",date);
+        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
+        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
+        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+
+        notes.add(note1);
+        notes.add(note2);
+        notes.add(note3);
+        notes.add(note4);
+
+        mAdapter = new NotesAdapter(notes);
     }
 
 
@@ -45,16 +73,7 @@ public class NotesFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            trip = (Trip) bundle.getSerializable("trip");
-        }
-
-        final ArrayList<Note> notes = trip.getNotes();
-
-        mAdapter = new NotesAdapter(notes);
         mRecyclerView.setAdapter(mAdapter);
-
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 

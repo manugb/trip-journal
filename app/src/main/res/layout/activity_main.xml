@@ -12,10 +12,7 @@
         android:id="@+id/frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:animateLayoutChanges="true"
-        >
-    </FrameLayout>
+        android:layout_above="@+id/navigation" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -24,7 +21,5 @@
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation" />
-
-
 
 </RelativeLayout>
