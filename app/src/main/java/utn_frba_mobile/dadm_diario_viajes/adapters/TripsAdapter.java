@@ -46,8 +46,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Trip trip = mDataset.get(position);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        final Trip trip = mDataset.get(position);
         holder.name.setText(trip.getName());
         holder.photo.setImageResource(trip.getPhoto());
 
@@ -57,6 +57,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
 
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 NotesFragment fragment = new NotesFragment();
+                fragment.setTrip(trip);
 
                 FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);

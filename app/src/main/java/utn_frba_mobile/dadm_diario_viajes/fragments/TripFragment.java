@@ -11,13 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
+import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class TripFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -34,14 +42,35 @@ public class TripFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        Trip spainTrip = createTripFor(currentUser.getUid(), "España", R.drawable.spain);
+        Trip newZelandTrip = createTripFor(currentUser.getUid(), "Nueva Zelanda", R.drawable.newzealand);
+
         List<Trip> trips = new ArrayList<>();
+        trips.add(spainTrip);
+        trips.add(newZelandTrip);
+
+        //TODO: Despues todo esto lo voy a reempleazar por un get de los trips que tiene el usuario en la base
+        mAdapter = new TripsAdapter(trips);
+    }
+
+    private Trip createTripFor(String userUID, String name, int photo) {
+        // Create new trip at /user-trips/$userid/$tripid and at
+        // /trips/$tripid simultaneously
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String key = database.child("trips").push().getKey();
+
         Date dateInit = new Date();
         Date dateEnd = new Date();
+        Trip trip = new Trip(key, name, dateInit, dateEnd, photo);
+        Map<String, Object> tripValues = trip.toMap();
 
-        trips.add(new Trip("España",dateInit,dateEnd, R.drawable.spain));
-        trips.add(new Trip("Nueva Zelanda",dateInit,dateEnd,R.drawable.newzealand));
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/trips/" + key, tripValues);
+        childUpdates.put("/users/" + userUID + "/trips/" + key, tripValues);
 
-        mAdapter = new TripsAdapter(trips);
+        database.updateChildren(childUpdates);
+        return trip;
     }
 
     @Nullable

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "567710486619-udkuhgjhq094bsb4mcgj4o26r1akje95.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "utn_frba_mobile.dadm_diario_viajes",
+            "certificate_hash": "091f1ba8ea135fae7cbbe2931aadd49fa3707c78"
+          }
+        },
+        {
           "client_id": "567710486619-t5j1nk89gptnaocrghqv26l9maje6lsq.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "567710486619-t5j1nk89gptnaocrghqv26l9maje6lsq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

@@ -1,21 +1,33 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
-import java.util.Date;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@IgnoreExtraProperties
 public class Trip {
+    private String id;
     private String name;
     private Date dateInit;
     private Date dateEnd;
     private int photo;
 
+    public Trip() {
+    }
 
-    public Trip() {}
-
-    public Trip(String name, Date dateInit, Date dateEnd, int photo) {
+    public Trip(String id, String name, Date dateInit, Date dateEnd, int photo) {
+        this.id = id;
         this.name = name;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
         this.photo = photo;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() { return this.name; }
@@ -30,5 +42,15 @@ public class Trip {
     public int getPhoto() { return this.photo; }
     public void setPhoto(int photo) { this.photo = photo; }
 
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("id", id);
+        result.put("name", name);
+        result.put("dateInit", dateInit);
+        result.put("dateEnd", dateEnd);
+        result.put("photo", photo);
+        return result;
+    }
 
 }

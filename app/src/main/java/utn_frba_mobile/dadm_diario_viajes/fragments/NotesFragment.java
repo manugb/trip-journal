@@ -1,5 +1,6 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,15 +13,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
+import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 
 public class NotesFragment extends Fragment {
+    private Trip trip;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
@@ -36,12 +44,10 @@ public class NotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // specify an adapter (see also next example)
-        Date date = new Date();
-        Note note1 = new Note("City Tour","Barcelona",date);
-        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+        Note note1 = createNote("City Tour","Barcelona");
+        Note note2 = createNote("Circuito Gastronómico","Barcelona");
+        Note note3 = createNote("Recorrido Histórico","Barcelona");
+        Note note4 = createNote("Circuito de Bares","Barcelona");
 
         notes = new ArrayList<>();
         notes.add(note1);
@@ -49,9 +55,25 @@ public class NotesFragment extends Fragment {
         notes.add(note3);
         notes.add(note4);
 
+        //TODO: Despues todo esto lo voy a reempleazar por un get de las notas que tiene el viaje en la base
         mAdapter = new NotesAdapter(notes);
     }
 
+
+    private Note createNote(String name, String location) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        String key = database.child("notes").push().getKey();
+
+        Note note = new Note(key, name, location, new Date());
+        Map<String, Object> noteValues = note.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/notes/" + key, noteValues);
+        childUpdates.put("/trips/" + trip.getId() + "/notes/" + key, noteValues);
+
+        database.updateChildren(childUpdates);
+        return note;
+    }
 
     @Nullable
     @Override
@@ -92,4 +114,7 @@ public class NotesFragment extends Fragment {
         return view;
     }
 
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
 }
