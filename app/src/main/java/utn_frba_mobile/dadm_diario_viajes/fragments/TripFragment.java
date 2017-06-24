@@ -11,18 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.activities.MainActivity;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
@@ -33,6 +35,7 @@ public class TripFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<Trip> trips = new ArrayList<>();
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
@@ -43,73 +46,36 @@ public class TripFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        //Spain notes
-        Note note1 = new Note("City Tour","Barcelona",date);
-        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        Note note4 = new Note("Circuito de Bares","Barcelona",date);
-
-        final ArrayList<Note> notesSpain = new ArrayList<>();
-        notesSpain.add(note1);
-        notesSpain.add(note2);
-        notesSpain.add(note3);
-        notesSpain.add(note4);
-        
-		//New Zealand notes
-        Note note5 = new Note("City Tour","Auckland",date);
-        Note note6 = new Note("Circuito Gastronómico","Rotorua",date);
-        Note note7 = new Note("Recorrido Histórico","Wellington",date);
-
-        final ArrayList<Note> notesNZ = new ArrayList<>();
-        notesNZ.add(note5);
-        notesNZ.add(note6);
-        notesNZ.add(note7);
-        
-        Trip spainTrip = createTripFor(currentUser.getUid(), "España", R.drawable.spain);
-        Trip newZelandTrip = createTripFor(currentUser.getUid(), "Nueva Zelanda", R.drawable.newzealand);
-
-        List<Trip> trips = new ArrayList<>();
-        trips.add(spainTrip);
-        trips.add(newZelandTrip);
-
-        //TODO: Despues todo esto lo voy a reempleazar por un get de los trips que tiene el usuario en la base
+        User currentUser = ((MainActivity) getActivity()).getLoggedUser();
+        findTripsOf(currentUser);
         mAdapter = new TripsAdapter(trips);
     }
 
-    private Trip createTripFor(String userUID, String name, int photo) {
-        // Create new trip at /user-trips/$userid/$tripid and at
-        // /trips/$tripid simultaneously
+    private void findTripsOf(User currentUser) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String key = database.child("trips").push().getKey();
-
-        Date dateInit = new Date();
-        Date dateEnd = new Date();
-        Trip trip = new Trip(key, name, dateInit, dateEnd, photo);
-        Map<String, Object> tripValues = trip.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/trips/" + key, tripValues);
-        childUpdates.put("/users/" + userUID + "/trips/" + key, tripValues);
-
-        database.updateChildren(childUpdates);
-        return trip;
+        database.child("trips").orderByChild("userId").equalTo(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    trips.add(child.getValue(Trip.class));
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_trip, container, false);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
         mRecyclerView.setAdapter(mAdapter);
-
         return view;
     }
 

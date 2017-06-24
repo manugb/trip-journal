@@ -12,55 +12,71 @@ import java.util.List;
 
 @IgnoreExtraProperties
 public class Trip  implements Serializable {
+
     private String id;
+    private String userId;
     private String name;
     private Date dateInit;
     private Date dateEnd;
     private int photo;
-    private ArrayList<Note> notes;
 
     public Trip() {
     }
 
-    public Trip(String id, String name, Date dateInit, Date dateEnd, int photo, ArrayList<Note> notes) {
+    public Trip(String id, String userId, String name, Date dateInit, Date dateEnd, int photo) {
         this.id = id;
+        this.userId = userId;
         this.name = name;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
         this.photo = photo;
-        this.notes = notes;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getName() { return this.name; }
-    public void setName(String name) { this.name = name; }
-
-    public Date getDateInit() { return this.dateInit; }
-    public void setDateInit(Date dateInit) { this.dateInit = dateInit; }
-
-    public Date getDateEnd() { return this.dateEnd; }
-    public void setDateEnd(Date dateEnd) { this.dateInit = dateEnd; }
-
-    public int getPhoto() { return this.photo; }
-    public void setPhoto(int photo) { this.photo = photo; }
-
-    public ArrayList<Note> getNotes() { return this.notes; }
-    public void setNotes(ArrayList<Note> notes) { this.notes = notes; }
-
-    public void addNote(Note note){ this.notes.add(note);}
-    
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("id", id);
-        result.put("name", name);
-        result.put("dateInit", dateInit);
-        result.put("dateEnd", dateEnd);
-        result.put("photo", photo);
-        return result;
+    public void setId(String id) {
+        this.id = id;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getDateInit() {
+        return dateInit;
+    }
+
+    public void setDateInit(Date dateInit) {
+        this.dateInit = dateInit;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public int getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(int photo) {
+        this.photo = photo;
+    }
 }

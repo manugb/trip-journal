@@ -55,19 +55,15 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Trip tripSelected = mDataset.get(holder.getAdapterPosition());
 
                 AppCompatActivity activity = (AppCompatActivity) v.getContext();
                 NotesFragment fragment = new NotesFragment();
-                fragment.setTrip(trip);
-
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("trip",tripSelected);
                 fragment.setArguments(bundle);
 
-      
                 FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
                 transaction.replace(R.id.frame_layout, fragment);

@@ -13,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,15 +29,15 @@ import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
+import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class NotesFragment extends Fragment {
-    private Trip trip;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
     private Trip trip;
-    private ArrayList<Note> notes;
+    private ArrayList<Note> notes = new ArrayList<>();
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -50,37 +53,26 @@ public class NotesFragment extends Fragment {
             trip = (Trip) bundle.getSerializable("trip");
         }
 
-        notes = trip.getNotes();
-        
-        Note note1 = createNote("City Tour","Barcelona");
-        Note note2 = createNote("Circuito Gastronómico","Barcelona");
-        Note note3 = createNote("Recorrido Histórico","Barcelona");
-        Note note4 = createNote("Circuito de Bares","Barcelona");
-
-
-        notes.add(note1);
-        notes.add(note2);
-        notes.add(note3);
-        notes.add(note4);
-
-        //TODO: Despues todo esto lo voy a reempleazar por un get de las notas que tiene el viaje en la base
+        findNotesOf(trip);
         mAdapter = new NotesAdapter(notes);
     }
 
-
-    private Note createNote(String name, String location) {
+    private void findNotesOf(Trip trip) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String key = database.child("notes").push().getKey();
+        database.child("notes").orderByChild("tripId").equalTo(trip.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    notes.add(child.getValue(Note.class));
+                }
+                mAdapter.notifyDataSetChanged();
+            }
 
-        Note note = new Note(key, name, location, new Date());
-        Map<String, Object> noteValues = note.toMap();
-
-        Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/notes/" + key, noteValues);
-        childUpdates.put("/trips/" + trip.getId() + "/notes/" + key, noteValues);
-
-        database.updateChildren(childUpdates);
-        return note;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
     }
 
     @Nullable
@@ -98,7 +90,6 @@ public class NotesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
