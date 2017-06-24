@@ -6,24 +6,29 @@ import com.google.firebase.database.IgnoreExtraProperties;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @IgnoreExtraProperties
-public class Trip {
+public class Trip  implements Serializable {
     private String id;
     private String name;
     private Date dateInit;
     private Date dateEnd;
     private int photo;
+    private ArrayList<Note> notes;
 
     public Trip() {
     }
 
-    public Trip(String id, String name, Date dateInit, Date dateEnd, int photo) {
+    public Trip(String id, String name, Date dateInit, Date dateEnd, int photo, ArrayList<Note> notes) {
         this.id = id;
         this.name = name;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
         this.photo = photo;
+        this.notes = notes;
     }
 
     public String getId() {
@@ -42,6 +47,11 @@ public class Trip {
     public int getPhoto() { return this.photo; }
     public void setPhoto(int photo) { this.photo = photo; }
 
+    public ArrayList<Note> getNotes() { return this.notes; }
+    public void setNotes(ArrayList<Note> notes) { this.notes = notes; }
+
+    public void addNote(Note note){ this.notes.add(note);}
+    
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();

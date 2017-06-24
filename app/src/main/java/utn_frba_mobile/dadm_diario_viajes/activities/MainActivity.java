@@ -8,7 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.ui.auth.IdpResponse;
@@ -70,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         generateUser(currentUser);
 
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -95,6 +99,35 @@ public class MainActivity extends AppCompatActivity {
         User user = User.create(currentUser);
         database.child("users").child(currentUser.getUid()).setValue(user);
         return user;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                onLogout();
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void onLogout() {
+        //mover a la pantalla de login
+        Intent intent = new Intent(this, AuthUiActivity.class);
+        startActivity(intent);
     }
 
     public static Intent createIntent(Context context, IdpResponse idpResponse) {

@@ -24,6 +24,7 @@ import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
+import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 
@@ -43,6 +44,29 @@ public class TripFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        //Spain notes
+        Note note1 = new Note("City Tour","Barcelona",date);
+        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
+        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
+        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+
+        final ArrayList<Note> notesSpain = new ArrayList<>();
+        notesSpain.add(note1);
+        notesSpain.add(note2);
+        notesSpain.add(note3);
+        notesSpain.add(note4);
+        
+		//New Zealand notes
+        Note note5 = new Note("City Tour","Auckland",date);
+        Note note6 = new Note("Circuito Gastronómico","Rotorua",date);
+        Note note7 = new Note("Recorrido Histórico","Wellington",date);
+
+        final ArrayList<Note> notesNZ = new ArrayList<>();
+        notesNZ.add(note5);
+        notesNZ.add(note6);
+        notesNZ.add(note7);
+        
         Trip spainTrip = createTripFor(currentUser.getUid(), "España", R.drawable.spain);
         Trip newZelandTrip = createTripFor(currentUser.getUid(), "Nueva Zelanda", R.drawable.newzealand);
 
@@ -84,10 +108,6 @@ public class TripFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        /*Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.trip_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-*/
         mRecyclerView.setAdapter(mAdapter);
 
         return view;

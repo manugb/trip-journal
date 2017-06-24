@@ -33,7 +33,8 @@ public class NotesFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<Note> notes;
+    private Trip trip;
+    private ArrayList<Note> notes;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -44,12 +45,19 @@ public class NotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip) bundle.getSerializable("trip");
+        }
+
+        notes = trip.getNotes();
+        
         Note note1 = createNote("City Tour","Barcelona");
         Note note2 = createNote("Circuito Gastronómico","Barcelona");
         Note note3 = createNote("Recorrido Histórico","Barcelona");
         Note note4 = createNote("Circuito de Bares","Barcelona");
 
-        notes = new ArrayList<>();
+
         notes.add(note1);
         notes.add(note2);
         notes.add(note3);
@@ -114,7 +122,4 @@ public class NotesFragment extends Fragment {
         return view;
     }
 
-    public void setTrip(Trip trip) {
-        this.trip = trip;
-    }
 }
