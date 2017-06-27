@@ -2,6 +2,7 @@ package utn_frba_mobile.dadm_diario_viajes.adapters;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -10,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,16 +40,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         public CardView card;
         public TextView name;
         public TextView location;
-        public TextView date;
-        public Button delete;
+        public TextView day;
+        public TextView month;
+        public ImageView photo;
+        public TextView comments;
 
         public ViewHolder(View v) {
             super(v);
             name = (TextView) v.findViewById(R.id.name);
             location = (TextView) v.findViewById(R.id.location);
-            date = (TextView) v.findViewById(R.id.date);
+            day = (TextView) v.findViewById(R.id.day);
+            month = (TextView) v.findViewById(R.id.month);
             card = (CardView) v.findViewById(R.id.card);
-            delete = (Button) v.findViewById(R.id.delete_note);
+            photo = (ImageView) v.findViewById(R.id.photo);
+            comments = (TextView) v.findViewById(R.id.comments);
         }
     }
 
@@ -77,8 +85,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.name.setText(note.getName());
         holder.location.setText(note.getLocation());
 
-        DateFormat format = SimpleDateFormat.getDateInstance();
-        holder.date.setText(format.format(note.getDate()));
+        DateFormat format = new SimpleDateFormat("dd");
+        holder.day.setText(format.format(note.getDate()));
+        format = new SimpleDateFormat("MMMM");
+        holder.month.setText(format.format(note.getDate()));
+        holder.photo.setImageResource(note.getPhoto());
+        holder.comments.setText(note.getComments());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,14 +108,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 transaction.replace(R.id.frame_layout, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-            }
-        });
-
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDataset.remove(note);
-                notifyDataSetChanged();
             }
         });
 

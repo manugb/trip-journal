@@ -3,12 +3,13 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:padding="2dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/trip_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         card_view:cardCornerRadius="6dp">
 
         <RelativeLayout
@@ -19,8 +20,8 @@
                 android:id="@+id/photo"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
-                android:alpha="0.8"
-                android:scaleType="fitXY" />
+                android:tint="#88101010"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/name"

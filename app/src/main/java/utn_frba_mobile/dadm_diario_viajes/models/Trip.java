@@ -72,9 +72,7 @@ public class Trip  implements Serializable {
         this.dateEnd = dateEnd;
     }
 
-    public int getPhoto() {
-        return photo;
-    }
+    public int getPhoto() { return photo;}
 
     public void setPhoto(int photo) {
         this.photo = photo;

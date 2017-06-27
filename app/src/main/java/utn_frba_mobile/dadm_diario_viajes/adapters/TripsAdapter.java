@@ -49,8 +49,9 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
-        holder.name.setText(trip.getName());
+
         holder.photo.setImageResource(trip.getPhoto());
+        holder.name.setText(trip.getName());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
