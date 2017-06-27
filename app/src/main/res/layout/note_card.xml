@@ -16,7 +16,6 @@
             android:padding="16dp"
             android:gravity="center_vertical|center_horizontal|center" >
 
-
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"

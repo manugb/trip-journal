@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
-import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
+import utn_frba_mobile.dadm_diario_viajes.fragments.TripsFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    selectedFragment = TripFragment.newInstance();
+                    selectedFragment = TripsFragment.newInstance();
                     break;
                 case R.id.navigation_add_note:
-                    selectedFragment = TripFragment.newInstance();
+                    selectedFragment = TripsFragment.newInstance();
                     break;
                 case R.id.navigation_profile:
-                    selectedFragment = TripFragment.newInstance();
+                    selectedFragment = TripsFragment.newInstance();
                     break;
             }
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Manually displaying the first fragment - one time only
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, TripFragment.newInstance());
+                transaction.replace(R.id.frame_layout, TripsFragment.newInstance());
                 transaction.commit();
 
                 //Used to select an item programmatically
