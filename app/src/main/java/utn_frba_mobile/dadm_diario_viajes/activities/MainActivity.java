@@ -15,6 +15,11 @@ import android.view.MenuItem;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
@@ -42,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
 
-            FragmentTransaction transaction = getFragmentManager().
-                    beginTransaction();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
             transaction.replace(R.id.frame_layout, selectedFragment);
             transaction.commit();
             return true;
@@ -52,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.os.Debug.waitForDebugger();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
@@ -62,33 +67,55 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        loggedUser = User.create(currentUser);
+        generateUser(currentUser, new Runnable() {
+            @Override
+            public void run() {
+                setContentView(R.layout.activity_main);
+                Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+                setSupportActionBar(myToolbar);
 
+                BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+                // Leave fragments code at the end
+                // If we're being restored from a previous state,
+                // then we don't need to do anything and should return or else
+                // we could end up with overlapping fragments.
+                if (savedInstanceState != null) {
+                    return;
+                }
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+                //Manually displaying the first fragment - one time only
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, TripFragment.newInstance());
+                transaction.commit();
 
-        // Leave fragments code at the end
-        // If we're being restored from a previous state,
-        // then we don't need to do anything and should return or else
-        // we could end up with overlapping fragments.
-        if (savedInstanceState != null) {
-            return;
-        }
+                //Used to select an item programmatically
+                //bottomNavigationView.getMenu().getItem(2).setChecked(true);
+            }
+        });
+    }
 
-        //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getFragmentManager().
-                beginTransaction();
-        transaction.replace(R.id.frame_layout, TripFragment.newInstance());
-        transaction.commit();
+    private void generateUser(final FirebaseUser currentUser, final Runnable onLoaded) {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("users").child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    //existe usuario con ese UID
+                    loggedUser = dataSnapshot.getValue(User.class);
+                    onLoaded.run();
+                } else {
+                    loggedUser = User.create(currentUser);
+                    database.child("users").child(currentUser.getUid()).setValue(loggedUser);
+                    onLoaded.run();
+                }
+            }
 
-        //Used to select an item programmatically
-        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
     @Override
@@ -100,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_settings:
                 return true;
@@ -116,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void onLogout() {
         //mover a la pantalla de login
+        FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, AuthUiActivity.class);
         startActivity(intent);
     }
@@ -127,4 +154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public User getLoggedUser() {
+        return loggedUser;
+    }
 }

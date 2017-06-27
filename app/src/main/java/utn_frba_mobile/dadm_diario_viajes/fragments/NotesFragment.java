@@ -1,5 +1,6 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -16,14 +17,23 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
+import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -31,7 +41,7 @@ public class NotesFragment extends Fragment {
     private Activity activity;
     private RecyclerView.LayoutManager mLayoutManager;
     private Trip trip;
-    private ArrayList<Note> notes;
+    private ArrayList<Note> notes = new ArrayList<>();
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -47,9 +57,26 @@ public class NotesFragment extends Fragment {
             trip = (Trip) bundle.getSerializable("trip");
         }
 
-        notes = trip.getNotes();
-
+        findNotesOf(trip);
         mAdapter = new NotesAdapter(notes);
+    }
+
+    private void findNotesOf(Trip trip) {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("notes").orderByChild("tripId").equalTo(trip.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                    notes.add(child.getValue(Note.class));
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                return;
+            }
+        });
     }
 
     @Nullable
@@ -66,7 +93,6 @@ public class NotesFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
