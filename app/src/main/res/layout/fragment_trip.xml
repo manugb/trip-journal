@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <!-- A RecyclerView with some commonly used attributes -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/trip_recycler_view"
+    <EditText
+        android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:ems="10"
+        android:hint="@string/edit_text_new_trip"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:alpha="0.8"
+        android:layout_below="@id/title"
+        android:scaleType="centerCrop" />
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/portada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cambiar foto de portada"
+        android:layout_below="@id/photo"/>
+
+    <Button
+        android:id="@+id/new_trip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Empezar"
+        android:layout_below="@id/portada"/>
+
+</RelativeLayout>
