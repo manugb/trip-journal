@@ -23,11 +23,17 @@
         android:scaleType="centerCrop" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/portada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cambiar foto de portada"
+        android:layout_below="@id/photo"/>
+
+    <Button
+        android:id="@+id/new_trip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Empezar"
-        android:onClick="newTrip"
-        android:layout_below="@id/photo"/>
+        android:layout_below="@id/portada"/>
 
 </RelativeLayout>
