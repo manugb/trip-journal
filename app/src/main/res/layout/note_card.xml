@@ -6,47 +6,75 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:elevation="3dp">
+        android:layout_margin="5dp"
+        android:theme="@style/CardStyle">
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:gravity="center_vertical|center_horizontal|center" >
+            android:gravity="center_vertical|center_horizontal|center">
 
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop" />
+
+            <RelativeLayout
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/photo"
+                android:layout_marginRight="15dp">
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="40sp" />
+
+                <TextView
+                    android:id="@+id/month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/day"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="15sp" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_below="@id/photo"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@+id/date"
+                android:layout_toRightOf="@+id/date"
+                android:textSize="25sp"
+                android:theme="@style/Title" />
 
             <TextView
                 android:id="@+id/location"
-                android:layout_below="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_below="@+id/name"
+                android:layout_toEndOf="@+id/date"
+                android:layout_toRightOf="@+id/date"
+                android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/date"
-                android:layout_below="@+id/location"
+                android:id="@+id/comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:layout_gravity="center_horizontal"/>
-
-            <Button
-                android:id="@+id/delete_note"
-                android:layout_below="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Borrar" />
+                android:layout_below="@+id/location"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp" />
 
         </RelativeLayout>
 

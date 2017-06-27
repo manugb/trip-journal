@@ -42,10 +42,10 @@ public class TripFragment extends Fragment {
         Date date = new Date();
 
         //Spain notes
-        Note note1 = new Note("City Tour","Barcelona",date);
-        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        Note note4 = new Note("Circuito de Bares","Barcelona",date);
+        Note note1 = new Note("City Tour","Barcelona",date, R.drawable.citytour1,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet justo ac purus mollis gravida vel in quam. Sed vulputate magna tortor, a bibendum purus cursus nec. Phasellus in nunc scelerisque, aliquet mauris venenatis, tempus tortor. Cras dapibus urna dictum ex euismod aliquet. Integer a ornare sem, quis tincidunt ligula.");
+        Note note2 = new Note("Circuito Gastronómico","Barcelona",date, R.drawable.comida,"Sed vulputate magna tortor, a bibendum purus cursus nec.");
+        Note note3 = new Note("Recorrido Histórico","Barcelona",date, R.drawable.historico,"Vestibulum aliquet justo ac purus mollis gravida vel in quam. Sed vulputate magna tortor, a bibendum purus cursus nec. Phasellus in nunc scelerisque, aliquet mauris venenatis, tempus tortor. Cras dapibus urna dictum ex euismod aliquet. Integer a ornare sem, quis tincidunt ligula.");
+        Note note4 = new Note("Circuito de Bares","Barcelona",date, R.drawable.bares,"El mejor trago de la historia!");
 
         final ArrayList<Note> notesSpain = new ArrayList<>();
         notesSpain.add(note1);
@@ -54,9 +54,9 @@ public class TripFragment extends Fragment {
         notesSpain.add(note4);
 
         //New Zealand notes
-        Note note5 = new Note("City Tour","Auckland",date);
-        Note note6 = new Note("Circuito Gastronómico","Rotorua",date);
-        Note note7 = new Note("Recorrido Histórico","Wellington",date);
+        Note note5 = new Note("City Tour","Auckland",date, R.drawable.citytour1,"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet justo ac purus mollis gravida vel in quam. Sed vulputate magna tortor, a bibendum purus cursus nec. Phasellus in nunc scelerisque, aliquet mauris venenatis, tempus tortor. Cras dapibus urna dictum ex euismod aliquet. Integer a ornare sem, quis tincidunt ligula.");
+        Note note6 = new Note("Circuito Gastronómico","Rotorua",date, R.drawable.comida,"Vestibulum aliquet justo ac purus mollis gravida vel in quam. Sed vulputate magna tortor, a bibendum purus cursus nec. Phasellus in nunc scelerisque, aliquet mauris venenatis, tempus tortor. Cras dapibus urna dictum ex euismod aliquet. Integer a ornare sem, quis tincidunt ligula.");
+        Note note7 = new Note("Recorrido Histórico","Wellington",date, R.drawable.historico,"Phasellus in nunc scelerisque, aliquet mauris venenatis, tempus tortor. Cras dapibus urna dictum ex euismod aliquet. Integer a ornare sem, quis tincidunt ligula.");
 
         final ArrayList<Note> notesNZ = new ArrayList<>();
         notesNZ.add(note5);

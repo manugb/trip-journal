@@ -11,6 +11,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +42,6 @@ public class NotesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             trip = (Trip) bundle.getSerializable("trip");
@@ -46,27 +49,14 @@ public class NotesFragment extends Fragment {
 
         notes = trip.getNotes();
 
-        Date date = new Date();
-        Note note1 = new Note("City Tour","Barcelona",date);
-        Note note2 = new Note("Circuito Gastronómico","Barcelona",date);
-        Note note3 = new Note("Recorrido Histórico","Barcelona",date);
-        Note note4 = new Note("Circuito de Bares","Barcelona",date);
-
-        notes.add(note1);
-        notes.add(note2);
-        notes.add(note3);
-        notes.add(note4);
-
         mAdapter = new NotesAdapter(notes);
     }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -99,5 +89,7 @@ public class NotesFragment extends Fragment {
 
         return view;
     }
+
+
 
 }
