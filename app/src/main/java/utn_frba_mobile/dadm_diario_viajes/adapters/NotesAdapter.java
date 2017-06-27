@@ -89,7 +89,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.day.setText(format.format(note.getDate()));
         format = new SimpleDateFormat("MMMM");
         holder.month.setText(format.format(note.getDate()));
-        holder.photo.setImageResource(R.drawable.comida);   //note.getPhoto()
+        holder.photo.setImageResource(note.getPhoto());
         holder.comments.setText(note.getComments());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
