@@ -1,43 +1,82 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+@IgnoreExtraProperties
 public class Trip  implements Serializable {
+
+    private String id;
+    private String userId;
     private String name;
     private Date dateInit;
     private Date dateEnd;
     private int photo;
-    private ArrayList<Note> notes;
 
+    public Trip() {
+    }
 
-    public Trip() {}
-
-    public Trip(String name, Date dateInit, Date dateEnd, int photo, ArrayList<Note> notes) {
+    public Trip(String id, String userId, String name, Date dateInit, Date dateEnd, int photo) {
+        this.id = id;
+        this.userId = userId;
         this.name = name;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
         this.photo = photo;
-        this.notes = notes;
     }
 
-    public String getName() { return this.name; }
-    public void setName(String name) { this.name = name; }
+    public String getId() {
+        return id;
+    }
 
-    public Date getDateInit() { return this.dateInit; }
-    public void setDateInit(Date dateInit) { this.dateInit = dateInit; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public Date getDateEnd() { return this.dateEnd; }
-    public void setDateEnd(Date dateEnd) { this.dateInit = dateEnd; }
+    public String getUserId() {
+        return userId;
+    }
 
-    public int getPhoto() { return this.photo; }
-    public void setPhoto(int photo) { this.photo = photo; }
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public ArrayList<Note> getNotes() { return this.notes; }
-    public void setNotes(ArrayList<Note> notes) { this.notes = notes; }
+    public String getName() {
+        return name;
+    }
 
-    public void addNote(Note note){ this.notes.add(note);}
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public Date getDateInit() {
+        return dateInit;
+    }
+
+    public void setDateInit(Date dateInit) {
+        this.dateInit = dateInit;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public int getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(int photo) {
+        this.photo = photo;
+    }
 }
