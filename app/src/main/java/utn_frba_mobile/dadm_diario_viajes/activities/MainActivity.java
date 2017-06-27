@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripsFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = TripsFragment.newInstance();
                     break;
                 case R.id.navigation_add_note:
-                    selectedFragment = TripsFragment.newInstance();
+                    selectedFragment = TripFragment.newInstance();
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = TripsFragment.newInstance();
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.os.Debug.waitForDebugger();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Manually displaying the first fragment - one time only
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, TripsFragment.newInstance());
+                transaction.replace(R.id.frame_layout, TripFragment.newInstance());
                 transaction.commit();
 
                 //Used to select an item programmatically
