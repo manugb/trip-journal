@@ -2,7 +2,6 @@ package utn_frba_mobile.dadm_diario_viajes.adapters;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -10,11 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -89,7 +85,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.day.setText(format.format(note.getDate()));
         format = new SimpleDateFormat("MMMM");
         holder.month.setText(format.format(note.getDate()));
-        holder.photo.setImageResource(note.getPhoto());
+        holder.photo.setImageResource(note.getImage());
         holder.comments.setText(note.getComments());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
