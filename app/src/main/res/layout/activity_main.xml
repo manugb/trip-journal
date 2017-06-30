@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ccc"
+    android:background="@color/backgroundApp"
     tools:context="utn_frba_mobile.dadm_diario_viajes.activities.MainActivity">
 
     <include

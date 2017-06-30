@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Diario de Viajes</string>
+    <string name="app_name">TripJournal</string>
     <string name="edit_text_new_trip">Título del diario</string>
 
     <!-- Strings related to login -->
