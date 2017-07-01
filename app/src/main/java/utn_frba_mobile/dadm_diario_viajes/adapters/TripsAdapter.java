@@ -16,6 +16,7 @@ import java.util.List;
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
+import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> {
     private List<Trip> mDataset;
@@ -50,7 +51,10 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
 
-        holder.photo.setImageResource(trip.getPhoto());
+        if (trip.getPhotoUrl() != null){
+            ImageLoader.instance.loadImage(trip.getPhotoUrl(), holder.photo);
+        }
+
         holder.name.setText(trip.getName());
 
         holder.card.setOnClickListener(new View.OnClickListener() {

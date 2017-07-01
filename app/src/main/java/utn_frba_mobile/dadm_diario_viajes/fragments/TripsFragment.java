@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import utn_frba_mobile.dadm_diario_viajes.activities.MainActivity;
 import utn_frba_mobile.dadm_diario_viajes.adapters.TripsAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
+import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 public class TripsFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -41,19 +44,19 @@ public class TripsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         User currentUser = ((MainActivity) getActivity()).getLoggedUser();
         findTripsOf(currentUser);
         mAdapter = new TripsAdapter(trips);
     }
 
-    private void findTripsOf(User currentUser) {
+    private void findTripsOf(final User currentUser) {
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("trips").orderByChild("userId").equalTo(currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
-                    trips.add(child.getValue(Trip.class));
+                    Trip trip = child.getValue(Trip.class);
+                    trips.add(trip);
                 }
                 mAdapter.notifyDataSetChanged();
             }

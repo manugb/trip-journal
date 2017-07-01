@@ -18,18 +18,17 @@ public class Trip  implements Serializable {
     private String name;
     private Date dateInit;
     private Date dateEnd;
-    private int photo;
+    private String photoUrl;
 
     public Trip() {
     }
 
-    public Trip(String id, String userId, String name, Date dateInit, Date dateEnd, int photo) {
+    public Trip(String id, String userId, String name, Date dateInit, Date dateEnd) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
-        this.photo = photo;
     }
 
     public String getId() {
@@ -72,9 +71,11 @@ public class Trip  implements Serializable {
         this.dateEnd = dateEnd;
     }
 
-    public int getPhoto() { return photo;}
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
 
-    public void setPhoto(int photo) {
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }
