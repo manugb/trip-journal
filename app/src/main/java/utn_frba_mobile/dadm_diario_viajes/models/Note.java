@@ -18,19 +18,18 @@ public class Note {
     private String name;
     private String location;
     private Date date;
-    private int image;
     private String comments;
+    private String imageUrl;
 
     public Note() {
     }
 
-    public Note(String id, String tripId, String name, String location, Date date, int image, String comments) {
+    public Note(String id, String tripId, String name, String location, Date date, String comments) {
         this.id = id;
         this.tripId = tripId;
         this.name = name;
         this.location = location;
         this.date = date;
-        this.image = image;
         this.comments = comments;
     }
 
@@ -59,10 +58,14 @@ public class Note {
     public Date getDate() { return this.date; }
     public void setDate(Date date) { this.date = date; }
 
-    public int getImage() { return this.image; }
-    public void setImage(int image) { this.image = image; }
-
     public String getComments() { return this.comments; }
     public void setCommets(String comments) { this.comments = comments; }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

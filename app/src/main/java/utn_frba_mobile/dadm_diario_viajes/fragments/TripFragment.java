@@ -2,12 +2,12 @@ package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,17 +15,21 @@ import android.support.annotation.Nullable;
 import android.app.Fragment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Date;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -42,6 +46,8 @@ public class TripFragment extends Fragment {
     private Button btnPortada;
     private Button btnNewTrip;
     private static int RESULT_LOAD_IMG = 1;
+
+    private String photoPath;
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
@@ -64,10 +70,7 @@ public class TripFragment extends Fragment {
         btnPortada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.READ_EXTERNAL_STORAGE);
-
+                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
                 if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(),
                             new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -84,48 +87,74 @@ public class TripFragment extends Fragment {
                 String titleTrip = title.getText().toString();
                 User currentUser = ((MainActivity) getActivity()).getLoggedUser();
                 Date date = new Date();
-                createTripFor(currentUser, titleTrip, date, date, (int) photo.getTag());
+                createTripFor(currentUser, titleTrip, date, date, photoPath);
+                openTripsFragment(v);
             }
         });
 
         return v;
     }
 
+    private void openTripsFragment(View v) {
+        AppCompatActivity activity = (AppCompatActivity) v.getContext();
+        TripsFragment fragment = new TripsFragment();
+        FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     private void startGallery() {
         // Create intent to Open Image applications like Gallery, Google Photos
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            photoPath = cursor.getString(columnIndex);
             cursor.close();
 
-            photo.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            //TODO ver storage y dnde guardar la foto del telefono
-
+            Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+            photo.setImageBitmap(bitmap);
         }
     }
 
 
-    private Trip createTripFor(User currentUser, String title, Date inicio, Date fin, int photo) {
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        String key = database.child("trips").push().getKey();
-        Trip trip = new Trip(key, currentUser.getId(), title, inicio, fin, photo);
-        database.child("trips").child(key).setValue(trip);
+    Trip createTripFor(User currentUser, String title, Date inicio, Date fin, String photoPath) {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final String key = database.child("trips").push().getKey();
+        final Trip trip = new Trip(key, currentUser.getId(), title, inicio, fin);
+
+        if (photoPath != null) {
+            StorageReference storage = FirebaseStorage.getInstance().getReference();
+
+            Uri file = Uri.fromFile(new File(photoPath));
+            StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
+            UploadTask uploadTask = imagen.putFile(file);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    trip.setPhotoUrl(downloadUrl.toString());
+                    database.child("trips").child(key).setValue(trip);
+                }
+            });
+        } else {
+            database.child("trips").child(key).setValue(trip);
+        }
+
         return trip;
     }
 

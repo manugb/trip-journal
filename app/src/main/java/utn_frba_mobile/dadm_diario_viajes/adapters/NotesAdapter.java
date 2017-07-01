@@ -19,6 +19,7 @@ import java.util.List;
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
+import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 /**
  * Created by manu on 07/05/17.
@@ -78,6 +79,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         // - replace the contents of the view with that element
         final Note note = mDataset.get(position);
 
+        if (note.getImageUrl() != null){
+            ImageLoader.instance.loadImage(note.getImageUrl(), holder.photo);
+        }
+
         holder.name.setText(note.getName());
         holder.location.setText(note.getLocation());
 
@@ -85,7 +90,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.day.setText(format.format(note.getDate()));
         format = new SimpleDateFormat("MMMM");
         holder.month.setText(format.format(note.getDate()));
-        holder.photo.setImageResource(note.getImage());
         holder.comments.setText(note.getComments());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
