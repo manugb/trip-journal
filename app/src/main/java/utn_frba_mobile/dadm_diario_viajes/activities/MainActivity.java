@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Manually displaying the first fragment - one time only
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, TripFragment.newInstance());
+                transaction.replace(R.id.frame_layout, TripsFragment.newInstance());
                 transaction.commit();
 
                 //Used to select an item programmatically
