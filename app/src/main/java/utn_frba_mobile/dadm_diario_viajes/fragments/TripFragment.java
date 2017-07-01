@@ -36,6 +36,7 @@ import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.activities.MainActivity;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
+import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,6 +49,7 @@ public class TripFragment extends Fragment {
     private static int RESULT_LOAD_IMG = 1;
 
     private String photoPath;
+    private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
@@ -62,8 +64,9 @@ public class TripFragment extends Fragment {
 
         title = (EditText) v.findViewById(R.id.title);
         photo = (ImageView) v.findViewById(R.id.photo);
-        photo.setImageResource(R.drawable.tripdefault);
-        photo.setTag(R.drawable.tripdefault);
+
+        ImageLoader.instance.loadImage(photoUrlDefault, photo);
+
         btnPortada = (Button) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
 
@@ -152,6 +155,7 @@ public class TripFragment extends Fragment {
                 }
             });
         } else {
+            trip.setPhotoUrl(photoUrlDefault);
             database.child("trips").child(key).setValue(trip);
         }
 
