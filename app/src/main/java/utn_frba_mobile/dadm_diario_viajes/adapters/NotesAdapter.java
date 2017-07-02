@@ -21,10 +21,6 @@ import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
-/**
- * Created by manu on 07/05/17.
- */
-
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     private List<Note> mDataset;
     private Context context;
