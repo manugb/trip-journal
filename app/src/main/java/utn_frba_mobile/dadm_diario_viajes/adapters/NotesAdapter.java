@@ -24,6 +24,7 @@ import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     private List<Note> mDataset;
+    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
