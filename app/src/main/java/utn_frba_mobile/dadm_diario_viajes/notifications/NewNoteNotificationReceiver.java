@@ -16,13 +16,10 @@ public class NewNoteNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Notification notification  = new Notification.Builder(context)
-                .setSmallIcon(R.drawable.logoapp)
-                .setContentTitle("TripJournal")
-                .setContentText("Recuerda subir una nota del dia de hoy en tu viaje!")
-                .setAutoCancel(true).build();
-
-        NotificationManager notificationmanager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationmanager.notify(0, notification);
+        try {
+            Utils.generateNotification(context);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

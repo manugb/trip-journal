@@ -101,11 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void configureAlarmNotification() {
-        /* Set the alarm to start at 10:30 AM */
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 10);
+        calendar.set(Calendar.MINUTE, 30);
 
         /* Retrieve a PendingIntent that will perform a broadcast */
         Intent alarmIntent = new Intent(MainActivity.this, NewNoteNotificationReceiver.class);
