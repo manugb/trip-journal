@@ -37,6 +37,7 @@ import org.joda.time.LocalDate;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -56,6 +57,7 @@ public class TripFragment extends Fragment {
     private ImageButton btnPortada;
     private Button btnNewTrip;
     private EditText initDateText;
+    private Date initDate = new Date();
     private static int RESULT_LOAD_IMG = 1;
     private String photoPath;
     private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
@@ -75,12 +77,9 @@ public class TripFragment extends Fragment {
 
         title = (EditText) v.findViewById(R.id.title);
         photo = (ImageView) v.findViewById(R.id.photo);
-
         ImageLoader.instance.loadImage(photoUrlDefault, photo);
-
         btnPortada = (ImageButton) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
-
         initDateText = (EditText) v.findViewById(R.id.initDate_text);
         initDateText.setInputType(InputType.TYPE_NULL);
         initDateText.setText(dateFormatter.format(new Date()));
@@ -113,8 +112,7 @@ public class TripFragment extends Fragment {
             public void onClick(View v) {
                 String titleTrip = title.getText().toString();
                 User currentUser = ((MainActivity) getActivity()).getLoggedUser();
-                Date date = new Date();
-                createTripFor(currentUser, titleTrip, date, date, photoPath);
+                createTripFor(currentUser, titleTrip, initDate, photoPath);
                 openTripsFragment(v);
             }
         });
@@ -123,16 +121,15 @@ public class TripFragment extends Fragment {
     }
 
     private void setDateTimeField(View v) {
-        Calendar newDate = Calendar.getInstance();
-
         initDatePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                initDateText.setText(dateFormatter.format(newDate.getTime()));
+                initDate.setDate(dayOfMonth);
+                initDate.setMonth(monthOfYear);
+                initDate.setYear(year);
+                initDateText.setText(dateFormatter.format(initDate));
             }
-        }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH));
+        }, initDate.getYear(), initDate.getMonth(), initDate.getDay());
     }
 
     private void openTripsFragment(View v) {
@@ -171,10 +168,10 @@ public class TripFragment extends Fragment {
     }
 
 
-    Trip createTripFor(User currentUser, String title, Date inicio, Date fin, String photoPath) {
+    Trip createTripFor(User currentUser, String title, Date inicio, String photoPath) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child("trips").push().getKey();
-        final Trip trip = new Trip(key, currentUser.getId(), title, inicio, fin);
+        final Trip trip = new Trip(key, currentUser.getId(), title, inicio);
 
         if (photoPath != null) {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
