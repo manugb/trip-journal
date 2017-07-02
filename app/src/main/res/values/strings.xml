@@ -38,4 +38,7 @@
     <string name="nombre">Nombre</string>
     <string name="fecha">Fecha</string>
     <string name="nota">Nota</string>
+    <string name="location">Lugar</string>
+    <string name="change_note_photo">Cambiar foto</string>
+    <string name="save">Guardar</string>
 </resources>
