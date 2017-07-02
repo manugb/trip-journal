@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -52,7 +53,7 @@ public class TripFragment extends Fragment {
 
     private EditText title;
     private ImageView photo;
-    private Button btnPortada;
+    private ImageButton btnPortada;
     private Button btnNewTrip;
     private EditText initDateText;
     private static int RESULT_LOAD_IMG = 1;
@@ -67,7 +68,6 @@ public class TripFragment extends Fragment {
         return tripFragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -78,11 +78,12 @@ public class TripFragment extends Fragment {
 
         ImageLoader.instance.loadImage(photoUrlDefault, photo);
 
-        btnPortada = (Button) v.findViewById(R.id.portada);
+        btnPortada = (ImageButton) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
 
         initDateText = (EditText) v.findViewById(R.id.initDate_text);
         initDateText.setInputType(InputType.TYPE_NULL);
+        initDateText.setText(dateFormatter.format(new Date()));
 
         setDateTimeField(v);
 
@@ -132,7 +133,6 @@ public class TripFragment extends Fragment {
                 initDateText.setText(dateFormatter.format(newDate.getTime()));
             }
         }, newDate.get(Calendar.YEAR), newDate.get(Calendar.MONTH), newDate.get(Calendar.DAY_OF_MONTH));
-
     }
 
     private void openTripsFragment(View v) {
