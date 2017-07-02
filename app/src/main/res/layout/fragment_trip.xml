@@ -69,7 +69,6 @@
                 android:hint="@string/from_date" />
         </FrameLayout>
 
-
         <TextView
             android:id="@+id/labelPortada"
             android:layout_width="wrap_content"
