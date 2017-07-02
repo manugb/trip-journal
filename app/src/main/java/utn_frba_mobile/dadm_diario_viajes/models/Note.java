@@ -1,14 +1,14 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
-
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by manu on 07/05/17.
  */
 @IgnoreExtraProperties
-public class Note {
+public class Note implements Serializable {
 
     private String id;
     private String tripId;
@@ -17,6 +17,7 @@ public class Note {
     private Date date;
     private String comments;
     private String imageUrl;
+    private String description;
 
     public Note() {
     }
@@ -42,12 +43,13 @@ public class Note {
         return tripId;
     }
 
-    public void setTripId(String tripId) {
-        this.tripId = tripId;
-    }
+    public void setTripId(String tripId) { this.tripId = tripId; }
 
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String name) { this.description = description; }
 
     public String getLocation() { return this.location; }
     public void setLocation(String location) { this.location = location; }

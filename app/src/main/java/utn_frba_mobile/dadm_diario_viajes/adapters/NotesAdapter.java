@@ -96,7 +96,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 NoteFragment fragment = new NoteFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putString("name", note.getName());
+                bundle.putSerializable("note", note);
                 fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
