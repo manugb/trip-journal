@@ -3,33 +3,44 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment">
+        android:background="@color/tw__solid_white">
 
         <TextView
             android:id="@+id/name_label"
-            android:layout_width="match_parent"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nombre" />
 
         <EditText
             android:id="@+id/name"
+            android:layout_below="@+id/name_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name_label"
+            android:layout_alignStart="@+id/name_label"
+            android:layout_alignRight="@+id/date_label"
+            android:layout_alignEnd="@+id/date_label" />
 
         <TextView
             android:id="@+id/date_label"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fecha" />
 
         <DatePicker
             android:id="@+id/date"
+            android:layout_below="@+id/date_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:calendarViewShown="false"
@@ -38,44 +49,77 @@
 
         <TextView
             android:id="@+id/description_label"
+            android:layout_below="@+id/date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nota" />
+            android:text="@string/nota"
+            android:layout_alignLeft="@+id/date_label"
+            android:layout_alignStart="@+id/date_label"
+            android:layout_alignRight="@+id/date_label"
+            android:layout_alignEnd="@+id/date_label" />
 
         <EditText
             android:id="@+id/description"
+            android:layout_below="@+id/description_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/description_label"
+            android:layout_alignEnd="@+id/description_label"
+            android:layout_alignLeft="@+id/description_label"
+            android:layout_alignStart="@+id/description_label" />
 
         <TextView
             android:id="@+id/location_label"
+            android:layout_below="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/location" />
+            android:text="@string/location"
+            android:layout_alignLeft="@+id/description"
+            android:layout_alignStart="@+id/description" />
 
         <EditText
             android:id="@+id/location"
+            android:layout_below="@+id/location_label"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/location_label"
+            android:layout_alignStart="@+id/location_label"
+            android:layout_alignRight="@+id/description"
+            android:layout_alignEnd="@+id/description" />
 
         <ImageView
             android:id="@+id/main_pic"
+            android:layout_below="@+id/location"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
             android:alpha="0.8"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:layout_alignLeft="@+id/location"
+            android:layout_alignStart="@+id/location"
+            android:layout_alignRight="@+id/location"
+            android:layout_alignEnd="@+id/location" />
 
         <Button
             android:id="@+id/change_main_pic"
+            android:layout_below="@+id/main_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/change_note_photo" />
+            android:text="@string/change_note_photo"
+            android:layout_alignLeft="@+id/location"
+            android:layout_alignStart="@+id/location"
+            android:layout_alignRight="@+id/location"
+            android:layout_alignEnd="@+id/location" />
 
         <Button
             android:id="@+id/new_note"
+            android:layout_below="@+id/change_main_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/save" />
+            android:text="@string/save"
+            android:layout_alignLeft="@+id/change_main_pic"
+            android:layout_alignStart="@+id/change_main_pic"
+            android:layout_alignRight="@+id/change_main_pic"
+            android:layout_alignEnd="@+id/change_main_pic" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
