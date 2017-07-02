@@ -2,6 +2,7 @@ package utn_frba_mobile.dadm_diario_viajes.adapters;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -23,7 +24,6 @@ import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     private List<Note> mDataset;
-    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -50,27 +50,21 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public NotesAdapter(List<Note> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public NotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.note_card, parent, false);
-        // set the view's size, margins, paddings and layout parameters
-        // ...
+    public NotesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_card, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         final Note note = mDataset.get(position);
@@ -82,21 +76,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.name.setText(note.getName());
         holder.location.setText(note.getLocation());
 
-        DateFormat format = new SimpleDateFormat("dd");
-        holder.day.setText(format.format(note.getDate()));
-        format = new SimpleDateFormat("MMMM");
-        holder.month.setText(format.format(note.getDate()));
+        DateFormat dayFormat = new SimpleDateFormat("dd");
+        DateFormat monthFormat = new SimpleDateFormat("MMMM");
+        holder.day.setText(dayFormat.format(note.getDate()));
+        holder.month.setText(monthFormat.format(note.getDate()));
         holder.comments.setText(note.getComments());
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Note noteSelected = mDataset.get(holder.getAdapterPosition());
 
-                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                AppCompatActivity activity = scanForActivity(v.getContext());
                 NoteFragment fragment = new NoteFragment();
 
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("note", note);
+                bundle.putSerializable("note", noteSelected);
                 fragment.setArguments(bundle);
 
                 FragmentTransaction transaction = activity.getFragmentManager().beginTransaction();
@@ -107,6 +102,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             }
         });
 
+    }
+
+    private static AppCompatActivity scanForActivity(Context context) {
+        if (context == null)
+            return null;
+        else if (context instanceof AppCompatActivity)
+            return (AppCompatActivity) context;
+        else if (context instanceof ContextWrapper)
+            return scanForActivity(((ContextWrapper)context).getBaseContext());
+        return null;
     }
 
     // Return the size of your dataset (invoked by the layout manager)

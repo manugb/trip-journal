@@ -64,10 +64,8 @@ public class NotesFragment extends Fragment {
         // specify an adapter (see also next example)
 
         notes = new ArrayList<>();
-
         mAdapter = new NotesAdapter(notes);
         findNotesOf(trip);
-
     }
 
     private void findNotesOf(Trip trip) {

@@ -37,9 +37,10 @@ public class NoteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            note = (Note)bundle.getSerializable("note");
+            note = (Note) bundle.getSerializable("note");
         }
     }
 
