@@ -14,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripsFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
             Fragment selectedFragment = null;
             switch (item.getItemId()) {
                 case R.id.navigation_home:
@@ -49,6 +51,19 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.navigation_add_note:
                     selectedFragment = TripFragment.newInstance();
+                    Fragment currentFragment = getFragmentManager().findFragmentById(R.id.frame_layout);
+
+                    if (currentFragment instanceof NotesFragment){
+                        NoteFragment fragment = NoteFragment.newInstance();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("trip", ((NotesFragment) currentFragment).getTrip());
+                        fragment.setArguments(bundle);
+
+                        selectedFragment = fragment;
+                    } else {
+                        selectedFragment = TripFragment.newInstance();
+                    }
                     break;
                 case R.id.navigation_profile:
                     selectedFragment = TripsFragment.newInstance();
@@ -179,11 +194,8 @@ public class MainActivity extends AppCompatActivity {
         return in;
     }
 
-
     public User getLoggedUser() {
         return loggedUser;
     }
 
-    public void submit(View view) {
-    }
 }

@@ -147,6 +147,8 @@ public class NotesFragment extends Fragment {
         return view;
     }
 
-
+    public Trip getTrip(){
+        return trip;
+    }
 
 }

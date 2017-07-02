@@ -88,7 +88,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
                 Note noteSelected = mDataset.get(holder.getAdapterPosition());
 
                 AppCompatActivity activity = scanForActivity(v.getContext());
-                NoteFragment fragment = new NoteFragment();
+                NoteFragment fragment = NoteFragment.newInstance();
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("note", noteSelected);
