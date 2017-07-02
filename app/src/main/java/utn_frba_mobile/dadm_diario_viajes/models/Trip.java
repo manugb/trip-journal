@@ -1,14 +1,9 @@
 package utn_frba_mobile.dadm_diario_viajes.models;
 
-import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @IgnoreExtraProperties
 public class Trip  implements Serializable {

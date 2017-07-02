@@ -1,7 +1,7 @@
 package utn_frba_mobile.dadm_diario_viajes.adapters;
 
-import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;

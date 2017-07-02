@@ -1,6 +1,5 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,10 +11,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,16 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
-import utn_frba_mobile.dadm_diario_viajes.models.User;
 
 public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;

@@ -5,8 +5,6 @@ import android.net.Uri;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.ArrayList;
-
 /**
  * Created by toiacabrera on 14/05/17.
  */
