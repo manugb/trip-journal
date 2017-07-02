@@ -23,12 +23,11 @@ public class Trip  implements Serializable {
     public Trip() {
     }
 
-    public Trip(String id, String userId, String name, Date dateInit, Date dateEnd) {
+    public Trip(String id, String userId, String name, Date dateInit) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.dateInit = dateInit;
-        this.dateEnd = dateEnd;
     }
 
     public String getId() {
