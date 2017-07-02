@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +66,7 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
                     Trip trip = child.getValue(Trip.class);
                     trips.add(trip);
                 }
+                setTripsMarkers();
                 mAdapter.notifyDataSetChanged();
             }
             @Override
@@ -125,11 +128,50 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.setMinZoomPreference(4);
+        setTripsMarkers();
     }
+
+    public void setTripsMarkers() {
+        if (mMap != null) {
+            for (Trip trip : trips) {
+                // Add a marker for the trips
+                LatLng ll = new LatLng(trip.getLatitude(), trip.getLongitude());
+                Marker m = mMap.addMarker(new MarkerOptions().position(ll).title(trip.getName()));
+                m.showInfoWindow();
+                mMap.setOnMarkerClickListener(onTripClick);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
+            };
+        }
+    }
+
+    private GoogleMap.OnMarkerClickListener onTripClick = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            Trip selectedTrip = null;
+            for (Trip trip : trips) {
+                if (trip.getName().equals(marker.getTitle())) {
+                    selectedTrip = trip;
+                    break;
+                }
+            }
+
+            if (selectedTrip != null) {
+                NotesFragment fragment = new NotesFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("trip", selectedTrip);
+                fragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.animator.enter_from_right, R.animator.exit_to_left, R.animator.enter_from_left, R.animator.exit_to_right);
+                transaction.replace(R.id.frame_layout, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+
+            return false;
+        }
+    };
 
 }

@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,6 +28,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -61,10 +65,18 @@ public class TripFragment extends Fragment {
     private DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
     private DatePickerDialog initDatePickerDialog;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private Location lastLocation;
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
         return tripFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
     @Override
@@ -114,7 +126,26 @@ public class TripFragment extends Fragment {
             }
         });
 
+        fetchLastLocation();
+
         return v;
+    }
+
+    private void fetchLastLocation() {
+        int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2001);
+        } else {
+            mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            lastLocation = location;
+                        }
+                    }
+                });
+        }
     }
 
     private void setDateTimeField(View v) {
@@ -168,7 +199,7 @@ public class TripFragment extends Fragment {
     Trip createTripFor(User currentUser, String title, Date inicio, String photoPath) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child("trips").push().getKey();
-        final Trip trip = new Trip(key, currentUser.getId(), title, inicio);
+        final Trip trip = new Trip(key, currentUser.getId(), title, inicio, lastLocation);
 
         if (photoPath != null) {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
@@ -191,6 +222,22 @@ public class TripFragment extends Fragment {
         }
 
         return trip;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 2001: { // Location
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    fetchLastLocation();
+                }
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
 }

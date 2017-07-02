@@ -5,7 +5,7 @@ android {
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "utn_frba_mobile.dadm_diario_viajes"
-        minSdkVersion 17
+        minSdkVersion 23
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -45,6 +45,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-auth-base:11.0.2'
     compile 'com.google.android.gms:play-services-auth:11.0.2'
     compile 'com.google.android.gms:play-services-maps:11.0.2'
+    compile 'com.google.android.gms:play-services-location:11.0.2'
     compile 'joda-time:joda-time:2.9.4'
     testCompile 'junit:junit:4.12'
 }
