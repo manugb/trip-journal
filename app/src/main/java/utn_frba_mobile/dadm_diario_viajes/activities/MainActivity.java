@@ -1,10 +1,11 @@
 package utn_frba_mobile.dadm_diario_viajes.activities;
 
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,39 +22,41 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
+
+import java.util.Calendar;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripsFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
+import utn_frba_mobile.dadm_diario_viajes.notifications.NewNoteNotificationReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
     private User loggedUser;
+    private PendingIntent pendingIntent;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment selectedFragment = null;
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    selectedFragment = TripsFragment.newInstance();
-                    break;
-                case R.id.navigation_add_note:
-                    selectedFragment = TripFragment.newInstance();
-                    break;
-                case R.id.navigation_profile:
-                    selectedFragment = TripsFragment.newInstance();
-                    break;
-            }
+        Fragment selectedFragment = null;
+        switch (item.getItemId()) {
+            case R.id.navigation_home:
+                selectedFragment = TripsFragment.newInstance();
+                break;
+            case R.id.navigation_add_note:
+                selectedFragment = TripFragment.newInstance();
+                break;
+            case R.id.navigation_profile:
+                selectedFragment = TripsFragment.newInstance();
+                break;
+        }
 
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_layout, selectedFragment);
-            transaction.commit();
-            return true;
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, selectedFragment);
+        transaction.commit();
+        return true;
         }
 
     };
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        configureAlarmNotification();
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser == null) {
@@ -80,10 +83,8 @@ public class MainActivity extends AppCompatActivity {
                 BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
                 navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-                // Leave fragments code at the end
-                // If we're being restored from a previous state,
-                // then we don't need to do anything and should return or else
-                // we could end up with overlapping fragments.
+                // Leave fragments code at the end. If we're being restored from a previous state,
+                // then we don't need to do anything and should return or else we could end up with overlapping fragments.
                 if (savedInstanceState != null) {
                     return;
                 }
@@ -97,6 +98,20 @@ public class MainActivity extends AppCompatActivity {
                 //bottomNavigationView.getMenu().getItem(2).setChecked(true);
             }
         });
+    }
+
+    private void configureAlarmNotification() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
+        calendar.set(Calendar.MINUTE, 30);
+
+        /* Retrieve a PendingIntent that will perform a broadcast */
+        Intent alarmIntent = new Intent(MainActivity.this, NewNoteNotificationReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, 0);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
     private void generateUser(final FirebaseUser currentUser, final Runnable onLoaded) {
@@ -137,14 +152,12 @@ public class MainActivity extends AppCompatActivity {
                 onLogout();
                 return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
+                // If we got here, the user's action was not recognized. Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }
 
     private void onLogout() {
-        //mover a la pantalla de login
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, AuthUiActivity.class);
         startActivity(intent);
