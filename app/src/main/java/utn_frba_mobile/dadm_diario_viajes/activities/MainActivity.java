@@ -14,10 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,31 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment selectedFragment = null;
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                selectedFragment = TripsFragment.newInstance();
-                break;
-            case R.id.navigation_add_note:
-                selectedFragment = TripFragment.newInstance();
-                break;
-            case R.id.navigation_profile:
-                selectedFragment = TripsFragment.newInstance();
-                break;
-        }
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    selectedFragment = TripsFragment.newInstance();
+                    break;
+                case R.id.navigation_add_note:
+                    selectedFragment = TripFragment.newInstance();
+                    break;
+                case R.id.navigation_profile:
+                    selectedFragment = TripsFragment.newInstance();
+                    break;
+            }
 
-        FragmentManager fm = getFragmentManager();
+            FragmentManager fm = getFragmentManager();
 
-        int count = fm.getBackStackEntryCount();
-        for(int i = 0; i < count; ++i) {
-            fm.popBackStackImmediate();
-        }
+            int count = fm.getBackStackEntryCount();
+            for(int i = 0; i < count; ++i) {
+                fm.popBackStackImmediate();
+            }
 
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.frame_layout, selectedFragment);
-        transaction.commit();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.commit();
 
-        return true;
+            return true;
         }
 
     };
@@ -183,5 +182,8 @@ public class MainActivity extends AppCompatActivity {
 
     public User getLoggedUser() {
         return loggedUser;
+    }
+
+    public void submit(View view) {
     }
 }

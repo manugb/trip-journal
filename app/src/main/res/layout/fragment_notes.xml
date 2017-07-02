@@ -7,53 +7,48 @@
     tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/trip"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp">
 
-        <RelativeLayout
-            android:id="@+id/trip"
+        <ImageView
+            android:id="@+id/photo_trip"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:tint="#88101010" />
+
+        <ImageButton
             android:layout_width="wrap_content"
-            android:layout_height="200dp">
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_black_24dp"
+            android:background="@android:color/transparent"
+            android:tint="@color/tw__solid_white"
+            android:id="@+id/edit_btn"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="11dp"
+            android:layout_marginEnd="11dp"
+            android:layout_marginTop="13dp" />
 
-            <ImageView
-                android:id="@+id/photo_trip"
-                android:layout_width="fill_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:tint="#88101010" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_edit_black_24dp"
-                android:background="@android:color/transparent"
-                android:tint="@color/tw__solid_white"
-                android:id="@+id/edit_btn"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="11dp"
-                android:layout_marginEnd="11dp"
-                android:layout_marginTop="13dp" />
-
-            <TextView
-                android:id="@+id/name_trip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textColor="#fff"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-        <!-- A RecyclerView with some commonly used attributes -->
-        <android.support.v7.widget.RecyclerView
-            android:layout_below="@+id/trip"
-            android:id="@+id/notes_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+        <TextView
+            android:id="@+id/name_trip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#fff"
+            android:textSize="40sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
+
+    <!-- A RecyclerView with some commonly used attributes -->
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/trip"
+        android:id="@+id/notes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
 </ScrollView>
