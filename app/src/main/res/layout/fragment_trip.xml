@@ -90,7 +90,7 @@
             android:layout_below="@+id/labelPortada"
             android:layout_marginTop="15dp"
             android:alpha="0.8"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
         <ImageButton
             android:contentDescription="Imagen viaje"

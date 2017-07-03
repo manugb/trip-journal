@@ -1,6 +1,7 @@
 package utn_frba_mobile.dadm_diario_viajes.fragments;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -19,8 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +35,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -47,16 +50,16 @@ import static android.app.Activity.RESULT_OK;
 public class NoteFragment extends Fragment {
 
     private EditText name;
-    private DatePicker datePicker;
-    private EditText description;
     private EditText location;
-    private ImageView mainPic;
+    private EditText dateText;
+    private EditText description;
+    private ImageView photo;
+    private ImageButton btnAddPhoto;
+    private ImageButton btnTakePhoto;
     private Button btnNewNote;
-    private Button btnMainPic;
-
-    private String mainPicPath;
-    private String picUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
-
+    private String photoPath;
+    private DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    private DatePickerDialog datePickerDialog;
 
     private Note note;
     private Trip trip;
@@ -80,8 +83,9 @@ public class NoteFragment extends Fragment {
 
                 getTripByNote(note);
 
-            } else if (bundle.containsKey("trip")){
+            } else if (bundle.containsKey("trip")) {
                 trip = (Trip) bundle.getSerializable("trip");
+                note = new Note();
             }
         }
     }
@@ -91,10 +95,11 @@ public class NoteFragment extends Fragment {
         database.child("trips").orderByChild("id").equalTo(note.getTripId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child: dataSnapshot.getChildren()) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
                     trip = child.getValue(Trip.class);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -107,51 +112,30 @@ public class NoteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
 
         name = (EditText) view.findViewById(R.id.name);
-        datePicker = (DatePicker) view.findViewById(R.id.date);
-        description = (EditText) view.findViewById(R.id.description);
         location = (EditText) view.findViewById(R.id.location);
-        mainPic = (ImageView) view.findViewById(R.id.main_pic);
-        btnNewNote = (Button) view.findViewById(R.id.new_note);
-        btnMainPic = (Button) view.findViewById(R.id.change_main_pic);
+        dateText = (EditText) view.findViewById(R.id.dateText);
 
-        if (note != null) {
-            name.setText(note.getName());
-
-            Date date = note.getDate();
-            datePicker.init(date.getYear(), date.getMonth(), date.getDay(), null);
-
-            description.setText(note.getDescription());
-            location.setText(note.getLocation());
-            ImageLoader.instance.loadImage(note.getImageUrl(), mainPic);
-        } else {
-            ImageLoader.instance.loadImage(picUrlDefault, mainPic);
-        }
-
-
-        btnNewNote.setOnClickListener(new View.OnClickListener() {
+        dateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (note != null) {
-                    note.setName(name.getText().toString());
-                    note.setDescription(description.getText().toString());
-                    note.setDate(new Date(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth()));
-                    updateNote(note);
-
-                } else {
-                    String noteName = name.getText().toString();
-                    String noteDescr = description.getText().toString();
-                    String noteLocation = location.getText().toString();
-
-                    Date savedDate = new Date(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth());
-
-                    createNoteFor(noteName, noteDescr, savedDate, noteLocation, trip);
-                }
-                openNotesFragment(v);
+                datePickerDialog.show();
             }
         });
 
-        btnMainPic.setOnClickListener(new View.OnClickListener() {
+
+        description = (EditText) view.findViewById(R.id.description);
+        photo = (ImageView) view.findViewById(R.id.photo);
+
+        btnTakePhoto = (ImageButton) view.findViewById(R.id.take_photo);
+        btnAddPhoto = (ImageButton) view.findViewById(R.id.add_photo);
+        btnNewNote = (Button) view.findViewById(R.id.new_note);
+
+        name.setText(note.getName());
+        location.setText(note.getLocation());
+        description.setText(note.getDescription());
+        ImageLoader.instance.loadImage(note.getImageUrl(), photo);
+
+        btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -165,6 +149,29 @@ public class NoteFragment extends Fragment {
             }
         });
 
+        btnNewNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (note != null) {
+                    note.setName(name.getText().toString());
+                    note.setDescription(description.getText().toString());
+                    note.setDate(new Date());
+                    updateNote(note);
+
+                } else {
+                    String noteName = name.getText().toString();
+                    String noteDescr = description.getText().toString();
+                    String noteLocation = location.getText().toString();
+
+                    Date savedDate = new Date();
+                    createNoteFor(noteName, noteDescr, savedDate, noteLocation, trip);
+                }
+                openNotesFragment(v);
+            }
+        });
+
+
         return view;
     }
 
@@ -172,17 +179,17 @@ public class NoteFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            mainPicPath = cursor.getString(columnIndex);
+            photoPath = cursor.getString(columnIndex);
             cursor.close();
 
-            Bitmap bitmap = BitmapFactory.decodeFile(mainPicPath);
-            mainPic.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+            photo.setImageBitmap(bitmap);
         }
     }
 
@@ -208,10 +215,10 @@ public class NoteFragment extends Fragment {
         final Note note;
 
         note = new Note(key, trip.getId(), noteName, location, savedDate, noteDescr);
-        if (mainPicPath != null) {
+        if (photoPath != null) {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
 
-            Uri file = Uri.fromFile(new File(mainPicPath));
+            Uri file = Uri.fromFile(new File(photoPath));
             StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
             UploadTask uploadTask = imagen.putFile(file);
 
@@ -224,7 +231,6 @@ public class NoteFragment extends Fragment {
                 }
             });
         } else {
-            note.setImageUrl(picUrlDefault);
             database.child("notes").child(key).setValue(note);
         }
     }
@@ -232,10 +238,10 @@ public class NoteFragment extends Fragment {
     private void updateNote(final Note note) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        if (mainPicPath != null) {
+        if (photoPath != null) {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
 
-            Uri file = Uri.fromFile(new File(mainPicPath));
+            Uri file = Uri.fromFile(new File(photoPath));
             StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
             UploadTask uploadTask = imagen.putFile(file);
 
