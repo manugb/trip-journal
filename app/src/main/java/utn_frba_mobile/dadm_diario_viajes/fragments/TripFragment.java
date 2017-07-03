@@ -28,9 +28,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -59,6 +64,7 @@ public class TripFragment extends Fragment {
     private ImageButton btnPortada;
     private Button btnNewTrip;
     private Button btnSaveTrip;
+    private Button location;
     private EditText endDateText;
     private EditText initDateText;
     private Date initDate = new Date();
@@ -72,7 +78,7 @@ public class TripFragment extends Fragment {
     private static int RESULT_LOAD_IMG = 1;
     private String photoPath;
     private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
-
+    private int PLACE_PICKER_REQUEST = 2;
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
@@ -105,6 +111,7 @@ public class TripFragment extends Fragment {
         initDateText.setInputType(InputType.TYPE_NULL);
         endDateText.setInputType(InputType.TYPE_NULL);
         TextView labelDate = (TextView) v.findViewById(R.id.labelDate);
+        location = (Button) v.findViewById(R.id.location);
 
         if (trip != null) {
             title.setText(trip.getName());
@@ -170,6 +177,22 @@ public class TripFragment extends Fragment {
                 String titleTrip = title.getText().toString();
                 updateTrip(trip, titleTrip, endDate, photoPath);
                 openTripsFragment(v);
+            }
+        });
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                try {
+                    startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                } catch (Error e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -254,6 +277,13 @@ public class TripFragment extends Fragment {
             Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
             photo.setTag(photoPath);
             photo.setImageBitmap(bitmap);
+        } else if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(getActivity(), data);
+                lastLocation = new Location("");
+                lastLocation.setLongitude(place.getLatLng().longitude);
+                lastLocation.setLatitude(place.getLatLng().latitude);
+            }
         }
     }
 
@@ -275,14 +305,13 @@ public class TripFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     trip.setPhotoUrl(downloadUrl.toString());
-                    database.child("trips").child(key).setValue(trip);
                 }
             });
         } else {
             trip.setPhotoUrl(photoUrlDefault);
-            database.child("trips").child(key).setValue(trip);
         }
 
+        database.child("trips").child(key).setValue(trip);
         return trip;
     }
 
@@ -306,13 +335,11 @@ public class TripFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     trip.setPhotoUrl(downloadUrl.toString());
-                    database.child("trips").child(trip.getId()).setValue(trip);
                 }
             });
-        } else {
-            trip.setPhotoUrl(photoUrlDefault);
-            database.child("trips").child(trip.getId()).setValue(trip);
         }
+
+        database.child("trips").child(trip.getId()).setValue(trip);
     }
 
 

@@ -21,7 +21,7 @@
             android:hint="@string/edit_text_new_trip" />
 
         <Button
-            android:id="@+id/ubicacionActual"
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/title"
@@ -37,8 +37,8 @@
             android:id="@+id/labelDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/ubicacionActual"
-            android:layout_below="@+id/ubicacionActual"
+            android:layout_alignStart="@+id/location"
+            android:layout_below="@+id/location"
             android:layout_marginTop="16dp"
             android:text="@string/init_date_text"
             android:textColor="@color/colorPrimary"
@@ -73,7 +73,7 @@
             android:id="@+id/labelPortada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/ubicacionActual"
+            android:layout_alignStart="@+id/location"
             android:layout_below="@+id/inputs"
             android:layout_marginTop="16dp"
             android:text="@string/cambiar_foto_de_portada"
