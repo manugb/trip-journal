@@ -22,6 +22,20 @@
                 android:scaleType="centerCrop"
                 android:tint="#88101010" />
 
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_edit_black_24dp"
+                android:background="@android:color/transparent"
+                android:tint="@color/tw__solid_white"
+                android:id="@+id/edit_btn"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="11dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginTop="13dp" />
+
             <TextView
                 android:id="@+id/name_trip"
                 android:layout_width="wrap_content"
