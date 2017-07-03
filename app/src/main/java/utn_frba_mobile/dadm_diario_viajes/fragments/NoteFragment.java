@@ -41,6 +41,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -277,15 +278,17 @@ public class NoteFragment extends Fragment {
     }
 
     private void setDateTimeField(View v) {
-        datePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                date.setDate(dayOfMonth);
-                date.setMonth(monthOfYear);
-                date.setYear(year);
+                Calendar c = Calendar.getInstance();
+                c.set(year, monthOfYear, dayOfMonth);
+                date = c.getTime();
                 dateText.setText(dateFormatter.format(date));
             }
-        }, date.getYear(), date.getMonth(), date.getDay());
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+
     }
 
 }
