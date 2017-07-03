@@ -15,9 +15,8 @@ public class Note implements Serializable {
     private String name;
     private String location;
     private Date date;
-    private String comments;
     private String imageUrl;
-    private String description;
+    private String comments;
 
     public Note() {
     }
@@ -34,7 +33,6 @@ public class Note implements Serializable {
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -42,14 +40,13 @@ public class Note implements Serializable {
     public String getTripId() {
         return tripId;
     }
-
     public void setTripId(String tripId) { this.tripId = tripId; }
 
     public String getName() { return this.name; }
     public void setName(String name) { this.name = name; }
 
-    public String getDescription() { return this.description; }
-    public void setDescription(String name) { this.description = description; }
+    public String getComments() { return this.comments; }
+    public void setComments(String desc) { this.comments = desc; }
 
     public String getLocation() { return this.location; }
     public void setLocation(String location) { this.location = location; }
@@ -57,13 +54,9 @@ public class Note implements Serializable {
     public Date getDate() { return this.date; }
     public void setDate(Date date) { this.date = date; }
 
-    public String getComments() { return this.comments; }
-    public void setCommets(String comments) { this.comments = comments; }
-
     public String getImageUrl() {
         return imageUrl;
     }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }

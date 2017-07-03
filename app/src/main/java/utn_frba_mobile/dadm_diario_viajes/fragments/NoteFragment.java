@@ -16,10 +16,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,18 +48,21 @@ import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 import static android.app.Activity.RESULT_OK;
 
-//TODO: Para todas las referencias a Date, deberia haber usado calendar, pero no le dedique tiempo a entenderlo
 public class NoteFragment extends Fragment {
 
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private EditText name;
     private EditText location;
     private EditText dateText;
-    private EditText description;
+    private EditText comments;
     private ImageView photo;
     private ImageButton btnAddPhoto;
     private ImageButton btnTakePhoto;
     private Button btnNewNote;
     private String photoPath;
+
+
+    private Date date = new Date();
     private DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
     private DatePickerDialog datePickerDialog;
 
@@ -85,7 +90,6 @@ public class NoteFragment extends Fragment {
 
             } else if (bundle.containsKey("trip")) {
                 trip = (Trip) bundle.getSerializable("trip");
-                note = new Note();
             }
         }
     }
@@ -114,26 +118,33 @@ public class NoteFragment extends Fragment {
         name = (EditText) view.findViewById(R.id.name);
         location = (EditText) view.findViewById(R.id.location);
         dateText = (EditText) view.findViewById(R.id.dateText);
+        dateText.setInputType(InputType.TYPE_NULL);
+        dateText.setText(dateFormatter.format(new Date()));
 
-        dateText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePickerDialog.show();
-            }
-        });
-
-
-        description = (EditText) view.findViewById(R.id.description);
+        comments = (EditText) view.findViewById(R.id.comments);
         photo = (ImageView) view.findViewById(R.id.photo);
 
         btnTakePhoto = (ImageButton) view.findViewById(R.id.take_photo);
         btnAddPhoto = (ImageButton) view.findViewById(R.id.add_photo);
         btnNewNote = (Button) view.findViewById(R.id.new_note);
 
-        name.setText(note.getName());
-        location.setText(note.getLocation());
-        description.setText(note.getDescription());
-        ImageLoader.instance.loadImage(note.getImageUrl(), photo);
+        if (note != null) {
+            name.setText(note.getName());
+            location.setText(note.getLocation());
+            dateText.setText(dateFormatter.format(note.getDate()));
+            comments.setText(note.getComments());
+            if (note.getImageUrl() != null) {
+                ImageLoader.instance.loadImage(note.getImageUrl(), photo);
+            }
+        }
+
+        setDateTimeField(view);
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
 
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,29 +160,38 @@ public class NoteFragment extends Fragment {
             }
         });
 
+        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
+
         btnNewNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (note != null) {
                     note.setName(name.getText().toString());
-                    note.setDescription(description.getText().toString());
-                    note.setDate(new Date());
+                    note.setLocation(location.getText().toString());
+                    note.setDate(date);
+                    note.setComments(comments.getText().toString());
+                    if (photoPath != null) {
+                        note.setImageUrl(photoPath);
+                    }
                     updateNote(note);
 
                 } else {
                     String noteName = name.getText().toString();
-                    String noteDescr = description.getText().toString();
+                    String noteDescr = comments.getText().toString();
                     String noteLocation = location.getText().toString();
-
                     Date savedDate = new Date();
                     createNoteFor(noteName, noteDescr, savedDate, noteLocation, trip);
                 }
                 openNotesFragment(v);
             }
         });
-
-
         return view;
     }
 
@@ -263,6 +283,18 @@ public class NoteFragment extends Fragment {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         // Start the Intent
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
+    }
+
+    private void setDateTimeField(View v) {
+        datePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                date.setDate(dayOfMonth);
+                date.setMonth(monthOfYear);
+                date.setYear(year);
+                dateText.setText(dateFormatter.format(date));
+            }
+        }, date.getYear(), date.getMonth(), date.getDay());
     }
 
 }

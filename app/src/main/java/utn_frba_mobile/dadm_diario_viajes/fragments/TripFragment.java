@@ -252,6 +252,7 @@ public class TripFragment extends Fragment {
             cursor.close();
 
             Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+            photo.setTag(photoPath);
             photo.setImageBitmap(bitmap);
         }
     }

@@ -115,7 +115,7 @@
             android:layout_below="@id/photo"
             android:background="@color/colorPrimary"
             android:textColor="@color/tw__solid_white"
-            android:text="Empezar"
+            android:text="@string/save"
             android:layout_alignStart="@+id/photo"
             android:layout_alignEnd="@+id/photo" />
 
@@ -127,7 +127,7 @@
             android:layout_below="@id/photo"
             android:background="@color/colorPrimary"
             android:textColor="@color/tw__solid_white"
-            android:text="Guardar"
+            android:text="@string/save"
             android:layout_alignStart="@+id/photo"
             android:layout_alignEnd="@+id/photo" />
 

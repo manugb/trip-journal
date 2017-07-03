@@ -37,13 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/location"
-            android:layout_alignLeft="@+id/description"
-            android:layout_alignStart="@+id/description"
+            android:layout_alignLeft="@+id/comments"
+            android:layout_alignStart="@+id/comments"
             android:layout_marginTop="16dp"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
-            android:layout_alignRight="@+id/description"
-            android:layout_alignEnd="@+id/description" />
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
 
         <EditText
             android:id="@+id/location"
@@ -52,8 +52,8 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/location_label"
             android:layout_alignStart="@+id/location_label"
-            android:layout_alignRight="@+id/description"
-            android:layout_alignEnd="@+id/description" />
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
 
         <TextView
             android:id="@+id/date_label"
@@ -80,7 +80,7 @@
             android:layout_marginRight="29dp" />
 
         <TextView
-            android:id="@+id/description_label"
+            android:id="@+id/comments_label"
             android:layout_below="@+id/dateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,15 +94,15 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/description"
-            android:layout_below="@+id/description_label"
+            android:id="@+id/comments"
+            android:layout_below="@+id/comments_label"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
-            android:layout_alignRight="@+id/description_label"
-            android:layout_alignEnd="@+id/description_label"
-            android:layout_alignLeft="@+id/description_label"
-            android:layout_alignStart="@+id/description_label" />
+            android:layout_alignRight="@+id/comments_label"
+            android:layout_alignEnd="@+id/comments_label"
+            android:layout_alignLeft="@+id/comments_label"
+            android:layout_alignStart="@+id/comments_label" />
 
         <ImageView
             android:id="@+id/photo"
@@ -111,7 +111,7 @@
             android:layout_marginTop="34dp"
             android:alpha="0.8"
             android:scaleType="centerCrop"
-            android:layout_below="@+id/description"
+            android:layout_below="@+id/comments"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
