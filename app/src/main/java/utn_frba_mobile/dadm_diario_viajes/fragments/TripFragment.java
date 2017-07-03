@@ -59,19 +59,20 @@ public class TripFragment extends Fragment {
     private ImageButton btnPortada;
     private Button btnNewTrip;
     private Button btnEndTrip;
-    private EditText initDateText;
     private EditText endDateText;
+    private EditText initDateText;
     private Date initDate = new Date();
     private Date endDate = new Date();
-    private static int RESULT_LOAD_IMG = 1;
-    private String photoPath;
-    private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
-    private DateFormat dateFormatter = DateFormat.getDateInstance();
 
+    private DateFormat dateFormatter = DateFormat.getDateInstance();
     private DatePickerDialog initDatePickerDialog;
     private DatePickerDialog endDatePickerDialog;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location lastLocation;
+    private static int RESULT_LOAD_IMG = 1;
+    private String photoPath;
+    private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
+
 
     public static TripFragment newInstance() {
         TripFragment tripFragment = new TripFragment();
@@ -251,6 +252,7 @@ public class TripFragment extends Fragment {
             cursor.close();
 
             Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
+            photo.setTag(photoPath);
             photo.setImageBitmap(bitmap);
         }
     }

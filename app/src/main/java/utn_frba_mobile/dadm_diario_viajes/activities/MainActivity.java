@@ -16,8 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -29,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment;
+import utn_frba_mobile.dadm_diario_viajes.fragments.NotesFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripFragment;
 import utn_frba_mobile.dadm_diario_viajes.fragments.TripsFragment;
 import utn_frba_mobile.dadm_diario_viajes.models.User;
@@ -43,31 +43,45 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment selectedFragment = null;
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                selectedFragment = TripsFragment.newInstance();
-                break;
-            case R.id.navigation_add_note:
-                selectedFragment = TripFragment.newInstance();
-                break;
-            case R.id.navigation_profile:
-                selectedFragment = TripsFragment.newInstance();
-                break;
-        }
 
-        FragmentManager fm = getFragmentManager();
+            Fragment selectedFragment = null;
+            switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    selectedFragment = TripsFragment.newInstance();
+                    break;
+                case R.id.navigation_add_note:
+                    selectedFragment = TripFragment.newInstance();
+                    Fragment currentFragment = getFragmentManager().findFragmentById(R.id.frame_layout);
 
-        int count = fm.getBackStackEntryCount();
-        for(int i = 0; i < count; ++i) {
-            fm.popBackStackImmediate();
-        }
+                    if (currentFragment instanceof NotesFragment){
+                        NoteFragment fragment = NoteFragment.newInstance();
 
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.frame_layout, selectedFragment);
-        transaction.commit();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("trip", ((NotesFragment) currentFragment).getTrip());
+                        fragment.setArguments(bundle);
 
-        return true;
+                        selectedFragment = fragment;
+                    } else {
+                        selectedFragment = TripFragment.newInstance();
+                    }
+                    break;
+                case R.id.navigation_profile:
+                    selectedFragment = TripsFragment.newInstance();
+                    break;
+            }
+
+            FragmentManager fm = getFragmentManager();
+
+            int count = fm.getBackStackEntryCount();
+            for(int i = 0; i < count; ++i) {
+                fm.popBackStackImmediate();
+            }
+
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.frame_layout, selectedFragment);
+            transaction.commit();
+
+            return true;
         }
 
     };
@@ -180,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
         return in;
     }
 
-
     public User getLoggedUser() {
         return loggedUser;
     }
+
 }

@@ -61,9 +61,11 @@ public class NotesFragment extends Fragment {
         if (bundle != null) {
             trip = (Trip) bundle.getSerializable("trip");
         }
+        // specify an adapter (see also next example)
 
-        findNotesOf(trip);
+        notes = new ArrayList<>();
         mAdapter = new NotesAdapter(notes);
+        findNotesOf(trip);
     }
 
     private void findNotesOf(Trip trip) {
@@ -145,6 +147,8 @@ public class NotesFragment extends Fragment {
         return view;
     }
 
-
+    public Trip getTrip(){
+        return trip;
+    }
 
 }

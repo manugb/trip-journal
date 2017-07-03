@@ -23,7 +23,7 @@
                 android:scaleType="centerCrop" />
 
             <RelativeLayout
-                android:id="@+id/date"
+                android:id="@+id/dateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/photo"
@@ -52,8 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/photo"
                 android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/date"
-                android:layout_toRightOf="@+id/date"
+                android:layout_toEndOf="@+id/dateText"
+                android:layout_toRightOf="@+id/dateText"
                 android:textSize="25sp"
                 android:theme="@style/Title" />
 
@@ -62,8 +62,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name"
-                android:layout_toEndOf="@+id/date"
-                android:layout_toRightOf="@+id/date"
+                android:layout_toEndOf="@+id/dateText"
+                android:layout_toRightOf="@+id/dateText"
                 android:textSize="15sp" />
 
             <TextView

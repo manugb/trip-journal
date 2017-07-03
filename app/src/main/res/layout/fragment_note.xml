@@ -1,14 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="utn_frba_mobile.dadm_diario_viajes.fragments.NoteFragment">
 
-    <TextView
-        android:id="@+id/note_name"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/tw__solid_white">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/name_label"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"/>
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_below="@+id/name_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/name_label"
+            android:layout_alignStart="@+id/name_label"
+            android:layout_alignRight="@+id/date_label"
+            android:layout_alignEnd="@+id/date_label" />
+
+        <TextView
+            android:id="@+id/location_label"
+            android:layout_below="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:layout_alignLeft="@+id/comments"
+            android:layout_alignStart="@+id/comments"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
+
+        <EditText
+            android:id="@+id/location"
+            android:layout_below="@+id/location_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/location_label"
+            android:layout_alignStart="@+id/location_label"
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
+
+        <TextView
+            android:id="@+id/date_label"
+            android:layout_below="@+id/location"
+            android:layout_marginLeft="29dp"
+            android:layout_marginRight="29dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"/>
+
+
+        <EditText
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/date_label"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignStart="@+id/date_label"
+            android:layout_below="@+id/date_label"
+            android:layout_marginRight="29dp" />
+
+        <TextView
+            android:id="@+id/comments_label"
+            android:layout_below="@+id/dateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nota"
+            android:layout_alignLeft="@+id/date_label"
+            android:layout_alignStart="@+id/date_label"
+            android:layout_alignRight="@+id/date_label"
+            android:layout_alignEnd="@+id/date_label"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/comments"
+            android:layout_below="@+id/comments_label"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:layout_alignRight="@+id/comments_label"
+            android:layout_alignEnd="@+id/comments_label"
+            android:layout_alignLeft="@+id/comments_label"
+            android:layout_alignStart="@+id/comments_label" />
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="34dp"
+            android:alpha="0.8"
+            android:scaleType="centerCrop"
+            android:layout_below="@+id/comments"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageButton
+            android:id="@+id/add_photo"
+            android:padding="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_camera_alt_black_24dp"
+            android:alpha="0.6"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:layout_alignBottom="@+id/photo"
+            android:layout_alignLeft="@+id/new_note"
+            android:layout_alignStart="@+id/new_note"
+            android:layout_alignTop="@+id/photo"
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
+
+        <Button
+            android:id="@+id/new_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_below="@+id/add_photo"
+            android:layout_marginTop="50dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/tw__solid_white"
+            android:layout_alignLeft="@+id/location"
+            android:layout_alignStart="@+id/location"
+            android:layout_alignRight="@+id/location"
+            android:layout_alignEnd="@+id/location" />
+
+
+    </RelativeLayout>
+</ScrollView>
