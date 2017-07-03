@@ -53,10 +53,12 @@ import static android.app.Activity.RESULT_OK;
 
 public class TripFragment extends Fragment {
 
+    private Trip trip;
     private EditText title;
     private ImageView photo;
     private ImageButton btnPortada;
     private Button btnNewTrip;
+    private Button btnEndTrip;
     private EditText initDateText;
     private Date initDate = new Date();
     private static int RESULT_LOAD_IMG = 1;
@@ -74,9 +76,14 @@ public class TripFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip)bundle.getSerializable("trip");
+        }
     }
 
     @Override
@@ -86,15 +93,25 @@ public class TripFragment extends Fragment {
 
         title = (EditText) v.findViewById(R.id.title);
         photo = (ImageView) v.findViewById(R.id.photo);
-        ImageLoader.instance.loadImage(photoUrlDefault, photo);
         btnPortada = (ImageButton) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
+        btnEndTrip = (Button) v.findViewById(R.id.end_trip);
         initDateText = (EditText) v.findViewById(R.id.initDate_text);
         initDateText.setInputType(InputType.TYPE_NULL);
-        initDateText.setText(dateFormatter.format(new Date()));
+
+        if (trip != null){
+            title.setText(trip.getName());
+            ImageLoader.instance.loadImage(trip.getPhotoUrl(), photo);
+            initDateText.setText(dateFormatter.format(trip.getDateInit()));
+        }else {
+            initDateText.setText(dateFormatter.format(new Date()));
+            ImageLoader.instance.loadImage(photoUrlDefault, photo);
+
+            //no muestro el finalizar viaje si se trata de uno nuevo
+            btnEndTrip.setVisibility(View.GONE);
+        }
 
         setDateTimeField(v);
-
         initDateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +138,25 @@ public class TripFragment extends Fragment {
             public void onClick(View v) {
                 String titleTrip = title.getText().toString();
                 User currentUser = ((MainActivity) getActivity()).getLoggedUser();
-                createTripFor(currentUser, titleTrip, initDate, photoPath);
+
+                if (trip != null) {
+                    updateTrip(trip, titleTrip, initDate, photoPath, false);
+                }else {
+                    createTripFor(currentUser, titleTrip, initDate, photoPath);
+                }
+                openTripsFragment(v);
+            }
+        });
+
+        btnEndTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String titleTrip = title.getText().toString();
+
+                if (trip != null) {
+                    updateTrip(trip, titleTrip, initDate, photoPath, true);
+                }
+
                 openTripsFragment(v);
             }
         });
@@ -223,6 +258,40 @@ public class TripFragment extends Fragment {
 
         return trip;
     }
+
+    private void updateTrip(final Trip trip, String titleTrip, Date initDate, String photoPath, Boolean ended) {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+        trip.setName(titleTrip);
+        trip.setDateInit(initDate);
+        trip.setLocation(lastLocation);
+
+        if (ended) {
+            trip.setDateEnd(new Date());
+        }
+
+        if (photoPath != null) {
+            StorageReference storage = FirebaseStorage.getInstance().getReference();
+
+            Uri file = Uri.fromFile(new File(photoPath));
+            StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
+            UploadTask uploadTask = imagen.putFile(file);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    trip.setPhotoUrl(downloadUrl.toString());
+                    database.child("trips").child(trip.getId()).setValue(trip);
+                }
+            });
+        } else {
+            trip.setPhotoUrl(photoUrlDefault);
+            database.child("trips").child(trip.getId()).setValue(trip);
+        }
+
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

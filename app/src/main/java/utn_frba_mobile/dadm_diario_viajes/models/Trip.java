@@ -80,7 +80,10 @@ public class Trip  implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-    public void setLatitude(double latitude) { this.latitude = latitude; }
+    public void setLocation(Location location) {
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
 
     public void setLongitude(double longitude) { this.longitude = longitude; }
 

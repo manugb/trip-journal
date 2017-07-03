@@ -112,5 +112,19 @@
             android:layout_alignRight="@+id/photo"
             android:layout_alignEnd="@+id/photo" />
 
+        <Button
+            android:id="@+id/end_trip"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/photo"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/tw__solid_white"
+            android:text="Finalizar viaje"
+            android:layout_alignLeft="@+id/photo"
+            android:layout_alignStart="@+id/photo"
+            android:layout_alignRight="@+id/photo"
+            android:layout_alignEnd="@+id/photo" />
+
     </RelativeLayout>
 </ScrollView>
