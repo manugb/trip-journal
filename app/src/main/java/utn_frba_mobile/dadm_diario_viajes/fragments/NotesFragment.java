@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ImageView;
 
@@ -47,6 +48,7 @@ public class NotesFragment extends Fragment {
     private TextView tripName;
     private ImageView tripPhoto;
     private ImageButton editButton;
+    private RelativeLayout noNotesLegend;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -75,7 +77,9 @@ public class NotesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     notes.add(child.getValue(Note.class));
+                    hideNoNotesLegend();
                 }
+
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -84,6 +88,11 @@ public class NotesFragment extends Fragment {
                 return;
             }
         });
+    }
+
+    private void hideNoNotesLegend() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        noNotesLegend.setVisibility(View.GONE);
     }
 
     @Nullable
@@ -98,6 +107,7 @@ public class NotesFragment extends Fragment {
         editButton = (ImageButton) view.findViewById(R.id.edit_btn);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
+        noNotesLegend = (RelativeLayout) view.findViewById(R.id.no_notes_legend);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);

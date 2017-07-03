@@ -39,7 +39,37 @@
                         android:id="@+id/trip_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
                         android:scrollbars="vertical" />
+
+                    <RelativeLayout
+                        android:id="@+id/no_trips_legend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="30dp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:text="@string/no_trips_title"
+                            android:id="@+id/no_trips_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:textSize="25sp" />
+
+                        <TextView
+                            android:text="@string/no_trips_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/no_trips_title"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="10dp"
+                            android:textAlignment="center"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
 
                 </LinearLayout>
 

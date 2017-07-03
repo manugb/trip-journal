@@ -41,4 +41,8 @@
     <string name="cambiar_foto_de_portada">Portada del viaje:</string>
     <string name="labelTitle">Nuevo diario:</string>
     <string name="init_date_text">¿Cuándo inicia su viaje?</string>
+    <string name="no_notes_title">Aún no tienes notas para este viaje :(</string>
+    <string name="no_notes_text">Crea una apretando en el "+" que esta abajo!</string>
+    <string name="no_trips_title">Aún no tienes viajes ingresados :(</string>
+    <string name="no_trips_text">Armá la mochila y luego crea uno apretando en el "+" que esta abajo!</string>
 </resources>
