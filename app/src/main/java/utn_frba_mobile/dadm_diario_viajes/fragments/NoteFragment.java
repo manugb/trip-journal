@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -217,9 +219,15 @@ public class NoteFragment extends Fragment {
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            setPhotoPath(imageBitmap);
             photo.setImageBitmap(imageBitmap);
-
         }
+    }
+
+    private void setPhotoPath(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        photoPath = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }
 
     private void openNotesFragment(View v) {
@@ -240,7 +248,6 @@ public class NoteFragment extends Fragment {
     private void createNoteFor(String noteName, String noteDescr, Date savedDate, String location, Trip trip) {
         final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         final String key = database.child("notes").push().getKey();
-        final String picPath;
         final Note note;
 
         note = new Note(key, trip.getId(), noteName, location, savedDate, noteDescr);
@@ -248,7 +255,7 @@ public class NoteFragment extends Fragment {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
 
             Uri file = Uri.fromFile(new File(photoPath));
-            StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
+            StorageReference imagen = storage.child("images").child("notes").child(file.getLastPathSegment());
             UploadTask uploadTask = imagen.putFile(file);
 
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -271,7 +278,7 @@ public class NoteFragment extends Fragment {
             StorageReference storage = FirebaseStorage.getInstance().getReference();
 
             Uri file = Uri.fromFile(new File(photoPath));
-            StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
+            StorageReference imagen = storage.child("images").child("notes").child(file.getLastPathSegment());
             UploadTask uploadTask = imagen.putFile(file);
 
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

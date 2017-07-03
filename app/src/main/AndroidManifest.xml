@@ -5,6 +5,7 @@
 
     <uses-sdk tools:overrideLibrary="com.firebase.ui, com.firebase.ui.auth" />
 
+
     <uses-feature android:name="android.hardware.camera"  android:required="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
