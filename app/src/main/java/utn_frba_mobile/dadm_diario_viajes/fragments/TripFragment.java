@@ -58,7 +58,7 @@ public class TripFragment extends Fragment {
     private ImageView photo;
     private ImageButton btnPortada;
     private Button btnNewTrip;
-    private Button btnEndTrip;
+    private Button btnSaveTrip;
     private EditText endDateText;
     private EditText initDateText;
     private Date initDate = new Date();
@@ -86,7 +86,7 @@ public class TripFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            trip = (Trip)bundle.getSerializable("trip");
+            trip = (Trip) bundle.getSerializable("trip");
         }
     }
 
@@ -99,14 +99,14 @@ public class TripFragment extends Fragment {
         photo = (ImageView) v.findViewById(R.id.photo);
         btnPortada = (ImageButton) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
-        btnEndTrip = (Button) v.findViewById(R.id.end_trip);
+        btnSaveTrip = (Button) v.findViewById(R.id.save_trip);
         initDateText = (EditText) v.findViewById(R.id.initDate_text);
         endDateText = (EditText) v.findViewById(R.id.endDate_text);
         initDateText.setInputType(InputType.TYPE_NULL);
         endDateText.setInputType(InputType.TYPE_NULL);
         TextView labelDate = (TextView) v.findViewById(R.id.labelDate);
 
-        if (trip != null){
+        if (trip != null) {
             title.setText(trip.getName());
             ImageLoader.instance.loadImage(trip.getPhotoUrl(), photo);
             endDateText.setVisibility(View.VISIBLE);
@@ -117,12 +117,12 @@ public class TripFragment extends Fragment {
             } else {
                 endDateText.setText(dateFormatter.format(endDate));
             }
-        }else {
+        } else {
             initDateText.setText(dateFormatter.format(initDate));
             ImageLoader.instance.loadImage(photoUrlDefault, photo);
 
             //no muestro el finalizar viaje si se trata de uno nuevo
-            btnEndTrip.setVisibility(View.GONE);
+            btnSaveTrip.setVisibility(View.GONE);
         }
 
         setInitDateTimeField(v);
@@ -157,19 +157,19 @@ public class TripFragment extends Fragment {
         btnNewTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String titleTrip = title.getText().toString();
-            User currentUser = ((MainActivity) getActivity()).getLoggedUser();
-            createTripFor(currentUser, titleTrip, initDate, photoPath);
-            openTripsFragment(v);
+                String titleTrip = title.getText().toString();
+                User currentUser = ((MainActivity) getActivity()).getLoggedUser();
+                createTripFor(currentUser, titleTrip, initDate, photoPath);
+                openTripsFragment(v);
             }
         });
 
-        btnEndTrip.setOnClickListener(new View.OnClickListener() {
+        btnSaveTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            String titleTrip = title.getText().toString();
-            updateTrip(trip, titleTrip, endDate, photoPath);
-            openTripsFragment(v);
+                String titleTrip = title.getText().toString();
+                updateTrip(trip, titleTrip, endDate, photoPath);
+                openTripsFragment(v);
             }
         });
 
@@ -184,14 +184,14 @@ public class TripFragment extends Fragment {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2001);
         } else {
             mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            lastLocation = location;
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                lastLocation = location;
+                            }
                         }
-                    }
-                });
+                    });
         }
     }
 
@@ -242,7 +242,7 @@ public class TripFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
@@ -275,13 +275,14 @@ public class TripFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     trip.setPhotoUrl(downloadUrl.toString());
+                    database.child("trips").child(key).setValue(trip);
                 }
             });
         } else {
             trip.setPhotoUrl(photoUrlDefault);
+            database.child("trips").child(key).setValue(trip);
         }
 
-        database.child("trips").child(key).setValue(trip);
         return trip;
     }
 
@@ -305,13 +306,13 @@ public class TripFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     trip.setPhotoUrl(downloadUrl.toString());
+                    database.child("trips").child(trip.getId()).setValue(trip);
                 }
             });
         } else {
             trip.setPhotoUrl(photoUrlDefault);
+            database.child("trips").child(trip.getId()).setValue(trip);
         }
-
-        database.child("trips").child(trip.getId()).setValue(trip);
     }
 
 

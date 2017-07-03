@@ -10,7 +10,8 @@
     <TabHost
         android:id="@+id/tab_host"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/tw__solid_white">
 
         <LinearLayout
             android:layout_width="match_parent"

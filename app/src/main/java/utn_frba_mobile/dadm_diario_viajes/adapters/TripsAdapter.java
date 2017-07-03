@@ -51,9 +51,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Trip trip = mDataset.get(position);
 
-        if (trip.getPhotoUrl() != null){
-            ImageLoader.instance.loadImage(trip.getPhotoUrl(), holder.photo);
-        }
+        ImageLoader.instance.loadImage(trip.getPhotoUrl(), holder.photo);
 
         holder.name.setText(trip.getName());
 

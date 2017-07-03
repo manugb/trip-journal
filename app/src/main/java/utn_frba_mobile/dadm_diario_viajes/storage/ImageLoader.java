@@ -35,7 +35,9 @@ public class ImageLoader {
 
     public void loadImage(final String urlString, ImageView photo) {
         try {
-            loadImage(new URL(urlString), photo);
+            if(urlString != null) {
+                loadImage(new URL(urlString), photo);
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

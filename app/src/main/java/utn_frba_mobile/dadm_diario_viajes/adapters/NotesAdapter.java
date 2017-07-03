@@ -70,9 +70,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         // - replace the contents of the view with that element
         final Note note = mDataset.get(position);
 
-        if (note.getImageUrl() != null){
-            ImageLoader.instance.loadImage(note.getImageUrl(), holder.photo);
-        }
+        ImageLoader.instance.loadImage(note.getImageUrl(), holder.photo);
 
         holder.name.setText(note.getName());
         holder.location.setText(note.getLocation());

@@ -133,9 +133,7 @@ public class NoteFragment extends Fragment {
             location.setText(note.getLocation());
             dateText.setText(dateFormatter.format(note.getDate()));
             comments.setText(note.getComments());
-            if (note.getImageUrl() != null) {
-                ImageLoader.instance.loadImage(note.getImageUrl(), photo);
-            }
+            ImageLoader.instance.loadImage(note.getImageUrl(), photo);
         }
 
         setDateTimeField(view);
