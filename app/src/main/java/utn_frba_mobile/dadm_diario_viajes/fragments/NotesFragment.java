@@ -11,6 +11,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +26,8 @@ import utn_frba_mobile.dadm_diario_viajes.R;
 import utn_frba_mobile.dadm_diario_viajes.adapters.NotesAdapter;
 import utn_frba_mobile.dadm_diario_viajes.models.Note;
 import utn_frba_mobile.dadm_diario_viajes.models.Trip;
+import utn_frba_mobile.dadm_diario_viajes.models.User;
+import utn_frba_mobile.dadm_diario_viajes.storage.ImageLoader;
 
 public class NotesFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -32,6 +36,8 @@ public class NotesFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private Trip trip;
     private ArrayList<Note> notes = new ArrayList<>();
+    private TextView tripName;
+    private ImageView tripPhoto;
 
     public static NotesFragment newInstance() {
         NotesFragment notesFragment = new NotesFragment();
@@ -74,6 +80,11 @@ public class NotesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_notes, container, false);
+        tripName = (TextView) view.findViewById(R.id.name_trip);
+        tripName.setText(trip.getName());
+        tripPhoto = (ImageView) view.findViewById(R.id.photo_trip);
+        ImageLoader.instance.loadImage(trip.getPhotoUrl(), tripPhoto);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.notes_recycler_view);
         mLayoutManager = new LinearLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
