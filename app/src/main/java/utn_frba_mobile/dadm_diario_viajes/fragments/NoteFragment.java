@@ -58,7 +58,6 @@ public class NoteFragment extends Fragment {
     private EditText comments;
     private ImageView photo;
     private ImageButton btnAddPhoto;
-    private ImageButton btnTakePhoto;
     private Button btnNewNote;
     private String photoPath;
 
@@ -126,7 +125,6 @@ public class NoteFragment extends Fragment {
         comments = (EditText) view.findViewById(R.id.comments);
         photo = (ImageView) view.findViewById(R.id.photo);
 
-        btnTakePhoto = (ImageButton) view.findViewById(R.id.take_photo);
         btnAddPhoto = (ImageButton) view.findViewById(R.id.add_photo);
         btnNewNote = (Button) view.findViewById(R.id.new_note);
 
@@ -158,16 +156,6 @@ public class NoteFragment extends Fragment {
                             2000);
                 } else {
                     startGallery();
-                }
-            }
-        });
-
-        btnTakePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(v.getContext().getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
             }
         });
@@ -216,19 +204,8 @@ public class NoteFragment extends Fragment {
             photo.setImageBitmap(bitmap);
         }
 
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            setPhotoPath(imageBitmap);
-            photo.setImageBitmap(imageBitmap);
-        }
     }
 
-    private void setPhotoPath(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        photoPath = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-    }
 
     private void openNotesFragment(View v) {
         AppCompatActivity activity = (AppCompatActivity) v.getContext();

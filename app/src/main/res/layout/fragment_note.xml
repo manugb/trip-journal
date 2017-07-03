@@ -116,36 +116,20 @@
             android:layout_alignParentStart="true" />
 
         <ImageButton
-            android:id="@+id/take_photo"
-            android:padding="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_camera_alt_black_24dp"
-            android:layout_alignTop="@+id/photo"
-            android:alpha="0.6"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:layout_alignBottom="@+id/photo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignRight="@+id/name_label"
-            android:layout_alignEnd="@+id/name_label" />
-
-        <ImageButton
             android:id="@+id/add_photo"
             android:padding="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_photo_library_black_24dp"
-            android:layout_alignBottom="@+id/take_photo"
-            android:layout_alignTop="@+id/photo"
+            android:src="@drawable/ic_camera_alt_black_24dp"
             android:alpha="0.6"
             android:background="@android:color/transparent"
             android:scaleType="fitCenter"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_toRightOf="@+id/take_photo"
-            android:layout_toEndOf="@+id/take_photo" />
+            android:layout_alignBottom="@+id/photo"
+            android:layout_alignLeft="@+id/new_note"
+            android:layout_alignStart="@+id/new_note"
+            android:layout_alignTop="@+id/photo"
+            android:layout_alignRight="@+id/comments"
+            android:layout_alignEnd="@+id/comments" />
 
         <Button
             android:id="@+id/new_note"
