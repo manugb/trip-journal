@@ -12,7 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -43,6 +46,7 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
     private List<Trip> trips = new ArrayList<>();
     private GoogleMap mMap;
     private MapFragment mapFragment;
+    private RelativeLayout noTripsLegend;
 
     public static TripsFragment newInstance() {
         TripsFragment tripsFragment = new TripsFragment();
@@ -65,6 +69,9 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Trip trip = child.getValue(Trip.class);
                     trips.add(trip);
+
+                    //Si hay al menos un viaje, oculto el mensaje de no_trips
+                    hideNoTripsLegend();
                 }
                 setTripsMarkers();
                 mAdapter.notifyDataSetChanged();
@@ -73,6 +80,11 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+    }
+
+    private void hideNoTripsLegend() {
+        mRecyclerView.setVisibility(View.VISIBLE);
+        noTripsLegend.setVisibility(View.GONE);
     }
 
     @Nullable
@@ -84,6 +96,7 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
+        noTripsLegend = (RelativeLayout) view.findViewById(R.id.no_trips_legend);
 
         TabHost host = (TabHost) view.findViewById(R.id.tab_host);
         host.setup();

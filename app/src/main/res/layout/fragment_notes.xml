@@ -46,10 +46,41 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/no_notes_legend"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/trip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="30dp"
+            android:visibility="visible">
+
+            <TextView
+                android:text="@string/no_notes_title"
+                android:id="@+id/no_notes_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="center"
+                android:textSize="25sp" />
+
+            <TextView
+                android:text="@string/no_notes_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/no_notes_title"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/notes_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_below="@+id/trip" />
 
     </RelativeLayout>
