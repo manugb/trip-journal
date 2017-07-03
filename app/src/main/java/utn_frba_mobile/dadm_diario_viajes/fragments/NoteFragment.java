@@ -50,7 +50,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class NoteFragment extends Fragment {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private EditText name;
     private EditText location;
     private EditText dateText;
@@ -70,6 +69,7 @@ public class NoteFragment extends Fragment {
     private Trip trip;
 
     private static int RESULT_LOAD_IMG = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
 
     public static NoteFragment newInstance() {
         NoteFragment noteFragment = new NoteFragment();
@@ -163,8 +163,10 @@ public class NoteFragment extends Fragment {
         btnTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(v.getContext().getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
             }
         });
 
@@ -210,6 +212,13 @@ public class NoteFragment extends Fragment {
 
             Bitmap bitmap = BitmapFactory.decodeFile(photoPath);
             photo.setImageBitmap(bitmap);
+        }
+
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            photo.setImageBitmap(imageBitmap);
+
         }
     }
 
