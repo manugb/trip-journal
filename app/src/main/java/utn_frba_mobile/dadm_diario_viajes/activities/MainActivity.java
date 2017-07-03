@@ -2,6 +2,7 @@ package utn_frba_mobile.dadm_diario_viajes.activities;
 
 import android.app.AlarmManager;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -55,9 +56,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentManager fm = getFragmentManager();
+
+        int count = fm.getBackStackEntryCount();
+        for(int i = 0; i < count; ++i) {
+            fm.popBackStackImmediate();
+        }
+
+        FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.frame_layout, selectedFragment);
         transaction.commit();
+
         return true;
         }
 
