@@ -77,9 +77,8 @@ public class NotesFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     notes.add(child.getValue(Note.class));
-                    hideNoNotesLegend();
                 }
-
+                hideNoNotesLegend();
                 mAdapter.notifyDataSetChanged();
             }
 
@@ -91,8 +90,10 @@ public class NotesFragment extends Fragment {
     }
 
     private void hideNoNotesLegend() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        noNotesLegend.setVisibility(View.GONE);
+        if (!notes.isEmpty()) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            noNotesLegend.setVisibility(View.GONE);
+        }
     }
 
     @Nullable
@@ -153,6 +154,8 @@ public class NotesFragment extends Fragment {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        hideNoNotesLegend();
 
         return view;
     }

@@ -83,8 +83,10 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void hideNoTripsLegend() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        noTripsLegend.setVisibility(View.GONE);
+        if (!trips.isEmpty()) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            noTripsLegend.setVisibility(View.GONE);
+        }
     }
 
     @Nullable
@@ -125,6 +127,8 @@ public class TripsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         mapFragment.getMapAsync(this);
+
+        hideNoTripsLegend();
 
         return view;
     }

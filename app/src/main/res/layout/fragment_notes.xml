@@ -12,12 +12,12 @@
 
         <RelativeLayout
             android:id="@+id/trip"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="200dp">
 
             <ImageView
                 android:id="@+id/photo_trip"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:tint="#88101010" />
