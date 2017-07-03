@@ -27,8 +27,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,7 +40,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import utn_frba_mobile.dadm_diario_viajes.R;
@@ -53,18 +53,23 @@ import static android.app.Activity.RESULT_OK;
 
 public class TripFragment extends Fragment {
 
+    private Trip trip;
     private EditText title;
     private ImageView photo;
     private ImageButton btnPortada;
     private Button btnNewTrip;
+    private Button btnEndTrip;
     private EditText initDateText;
+    private EditText endDateText;
     private Date initDate = new Date();
+    private Date endDate = new Date();
     private static int RESULT_LOAD_IMG = 1;
     private String photoPath;
     private String photoUrlDefault = "https://firebasestorage.googleapis.com/v0/b/dadm-diario-viajes.appspot.com/o/images%2Ftrips%2Ftripdefault.jpg?alt=media&token=65e3621c-8f72-4dc5-a273-5e0a69e08bb0";
-    private DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    private DateFormat dateFormatter = DateFormat.getDateInstance();
 
     private DatePickerDialog initDatePickerDialog;
+    private DatePickerDialog endDatePickerDialog;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location lastLocation;
 
@@ -74,9 +79,14 @@ public class TripFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            trip = (Trip)bundle.getSerializable("trip");
+        }
     }
 
     @Override
@@ -86,19 +96,46 @@ public class TripFragment extends Fragment {
 
         title = (EditText) v.findViewById(R.id.title);
         photo = (ImageView) v.findViewById(R.id.photo);
-        ImageLoader.instance.loadImage(photoUrlDefault, photo);
         btnPortada = (ImageButton) v.findViewById(R.id.portada);
         btnNewTrip = (Button) v.findViewById(R.id.new_trip);
+        btnEndTrip = (Button) v.findViewById(R.id.end_trip);
         initDateText = (EditText) v.findViewById(R.id.initDate_text);
+        endDateText = (EditText) v.findViewById(R.id.endDate_text);
         initDateText.setInputType(InputType.TYPE_NULL);
-        initDateText.setText(dateFormatter.format(new Date()));
+        endDateText.setInputType(InputType.TYPE_NULL);
+        TextView labelDate = (TextView) v.findViewById(R.id.labelDate);
 
-        setDateTimeField(v);
+        if (trip != null){
+            title.setText(trip.getName());
+            ImageLoader.instance.loadImage(trip.getPhotoUrl(), photo);
+            endDateText.setVisibility(View.VISIBLE);
+            initDateText.setVisibility(View.GONE);
+            labelDate.setText("¿Cuando finaliza su viaje?");
+            if (trip.getDateEnd() != null) {
+                endDateText.setText(dateFormatter.format(trip.getDateEnd()));
+            } else {
+                endDateText.setText(dateFormatter.format(endDate));
+            }
+        }else {
+            initDateText.setText(dateFormatter.format(initDate));
+            ImageLoader.instance.loadImage(photoUrlDefault, photo);
 
+            //no muestro el finalizar viaje si se trata de uno nuevo
+            btnEndTrip.setVisibility(View.GONE);
+        }
+
+        setInitDateTimeField(v);
+        setEndDateTimeField(v);
         initDateText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initDatePickerDialog.show();
+            }
+        });
+        endDateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endDatePickerDialog.show();
             }
         });
 
@@ -119,10 +156,19 @@ public class TripFragment extends Fragment {
         btnNewTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String titleTrip = title.getText().toString();
-                User currentUser = ((MainActivity) getActivity()).getLoggedUser();
-                createTripFor(currentUser, titleTrip, initDate, photoPath);
-                openTripsFragment(v);
+            String titleTrip = title.getText().toString();
+            User currentUser = ((MainActivity) getActivity()).getLoggedUser();
+            createTripFor(currentUser, titleTrip, initDate, photoPath);
+            openTripsFragment(v);
+            }
+        });
+
+        btnEndTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            String titleTrip = title.getText().toString();
+            updateTrip(trip, titleTrip, endDate, photoPath);
+            openTripsFragment(v);
             }
         });
 
@@ -148,16 +194,30 @@ public class TripFragment extends Fragment {
         }
     }
 
-    private void setDateTimeField(View v) {
-        initDatePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
-
+    private void setInitDateTimeField(View v) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(initDate);
+        initDatePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                initDate.setDate(dayOfMonth);
-                initDate.setMonth(monthOfYear);
-                initDate.setYear(year);
+                Calendar c = Calendar.getInstance();
+                c.set(year, monthOfYear, dayOfMonth);
+                initDate = c.getTime();
                 initDateText.setText(dateFormatter.format(initDate));
             }
-        }, initDate.getYear(), initDate.getMonth(), initDate.getDay());
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+    }
+
+    private void setEndDateTimeField(View v) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(endDate);
+        endDatePickerDialog = new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar c = Calendar.getInstance();
+                c.set(year, monthOfYear, dayOfMonth);
+                endDate = c.getTime();
+                endDateText.setText(dateFormatter.format(endDate));
+            }
+        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
     }
 
     private void openTripsFragment(View v) {
@@ -213,16 +273,45 @@ public class TripFragment extends Fragment {
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
                     trip.setPhotoUrl(downloadUrl.toString());
-                    database.child("trips").child(key).setValue(trip);
                 }
             });
         } else {
             trip.setPhotoUrl(photoUrlDefault);
-            database.child("trips").child(key).setValue(trip);
         }
 
+        database.child("trips").child(key).setValue(trip);
         return trip;
     }
+
+    private void updateTrip(final Trip trip, String titleTrip, Date endDate, String photoPath) {
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+        trip.setName(titleTrip);
+        trip.setDateInit(initDate);
+        trip.setLocation(lastLocation);
+        trip.setDateEnd(endDate);
+
+        if (photoPath != null) {
+            StorageReference storage = FirebaseStorage.getInstance().getReference();
+
+            Uri file = Uri.fromFile(new File(photoPath));
+            StorageReference imagen = storage.child("images").child("trips").child(file.getLastPathSegment());
+            UploadTask uploadTask = imagen.putFile(file);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    trip.setPhotoUrl(downloadUrl.toString());
+                }
+            });
+        } else {
+            trip.setPhotoUrl(photoUrlDefault);
+        }
+
+        database.child("trips").child(trip.getId()).setValue(trip);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

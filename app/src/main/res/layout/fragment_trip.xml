@@ -6,16 +6,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/tw__solid_white">
 
         <EditText
             android:id="@+id/title"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginLeft="29dp"
             android:layout_marginStart="29dp"
             android:layout_marginTop="29dp"
+            android:layout_marginEnd="29dp"
             android:ems="8"
             android:hint="@string/edit_text_new_trip" />
 
@@ -23,21 +23,19 @@
             android:id="@+id/ubicacionActual"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/title"
             android:layout_alignStart="@+id/title"
             android:layout_below="@+id/title"
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_location_on_black_24dp"
+            android:drawableStart="@drawable/ic_location_on_black_24dp"
             android:drawablePadding="5dp"
             android:text="Usar la ubicación actual"
             android:textAllCaps="false"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/labelInitDate"
+            android:id="@+id/labelDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/ubicacionActual"
             android:layout_alignStart="@+id/ubicacionActual"
             android:layout_below="@+id/ubicacionActual"
             android:layout_marginTop="16dp"
@@ -45,37 +43,49 @@
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
-        <EditText
-            android:id="@+id/initDate_text"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/inputs"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/labelInitDate"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignStart="@+id/labelInitDate"
-            android:layout_below="@+id/labelInitDate"
-            android:layout_marginRight="29dp"
-            android:hint="@string/from_date" />
+            android:layout_marginEnd="29dp"
+            android:layout_alignStart="@+id/labelDate"
+            android:layout_below="@+id/labelDate">
+
+            <EditText
+                android:id="@+id/initDate_text"
+                android:inputType="date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/from_date" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/endDate_text"
+                android:inputType="date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/from_date" />
+        </FrameLayout>
+
 
         <TextView
             android:id="@+id/labelPortada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/ubicacionActual"
             android:layout_alignStart="@+id/ubicacionActual"
-            android:layout_below="@+id/initDate_text"
+            android:layout_below="@+id/inputs"
             android:layout_marginTop="16dp"
             android:text="@string/cambiar_foto_de_portada"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp" />
 
         <ImageView
+            android:contentDescription="Imagen viaje"
             android:id="@+id/photo"
             android:layout_width="fill_parent"
             android:layout_height="200dp"
-            android:layout_alignEnd="@+id/initDate_text"
-            android:layout_alignLeft="@+id/labelPortada"
-            android:layout_alignRight="@+id/initDate_text"
+            android:layout_alignEnd="@+id/inputs"
             android:layout_alignStart="@+id/labelPortada"
             android:layout_below="@+id/labelPortada"
             android:layout_marginTop="15dp"
@@ -83,13 +93,12 @@
             android:scaleType="centerCrop" />
 
         <ImageButton
+            android:contentDescription="Imagen viaje"
             android:id="@+id/portada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/new_trip"
             android:layout_alignEnd="@+id/photo"
-            android:layout_alignLeft="@+id/photo"
-            android:layout_alignRight="@+id/photo"
             android:layout_alignStart="@+id/photo"
             android:layout_alignTop="@+id/photo"
             android:layout_margin="50dp"
@@ -100,16 +109,26 @@
 
         <Button
             android:id="@+id/new_trip"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/photo"
             android:background="@color/colorPrimary"
             android:textColor="@color/tw__solid_white"
             android:text="Empezar"
-            android:layout_alignLeft="@+id/photo"
             android:layout_alignStart="@+id/photo"
-            android:layout_alignRight="@+id/photo"
+            android:layout_alignEnd="@+id/photo" />
+
+        <Button
+            android:id="@+id/end_trip"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/photo"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/tw__solid_white"
+            android:text="Guardar"
+            android:layout_alignStart="@+id/photo"
             android:layout_alignEnd="@+id/photo" />
 
     </RelativeLayout>
