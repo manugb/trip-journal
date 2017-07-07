@@ -10,4 +10,11 @@ Podrás visualizar tu diario de dos formas diferentes:
 - Lista de viajes, al seleccionar el viaje verás las notas del mismo.
 - Mapa con marcas por viaje, al seleccionar la misma verás las notas de ese viaje.
 
-![Alt text](/images/1.png?raw=true)
+![Alt text](/images/1.png)
+![Alt text](/images/2.png)
+![Alt text](/images/3.png)
+![Alt text](/images/4.png)
+![Alt text](/images/5.png)
+![Alt text](/images/6.png)
+![Alt text](/images/7.png)
+![Alt text](/images/8.png)
